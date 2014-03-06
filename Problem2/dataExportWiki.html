@@ -49,14 +49,13 @@
             arrayOfLines[0]="";
             titles.forEach(function(d){arrayOfLines[0]+=d+",";});
             var rows=[];
-            
+            var marker=0;
             //get body
 			$.each(body, function(index, value) {
 				rows=[];
 				//$(value)=$(value).slice(0,5)
 				for(i=0; i<=5; i++){		
-                	console.log($(value).find("td").eq(i).text());//This is getting you
-                	//what you want... now what?
+                	//console.log($(value).find("td").eq(i).text());
                 	
                 	if($(value).find("td").eq(i).text() != ""){
                 		//console.log(convertToInt($(value).text()) );
@@ -66,9 +65,24 @@
                 		rows.push($(value).find("td").eq(i).text());
                 	}
             	}
+            	count=0;
+            	for(j=1; j<=5; j++){
+            		//count=0;
+            		console.log(rows[j]);
+            		if(rows[j] == "" || rows[j] == null ){
+            		 count=count+1;
+            			console.log(count);
+            		}
+            	};
             	
-            	arrayOfLines[index+1]="";
-            	rows.forEach(function(d){arrayOfLines[index+1]+=d+",";});
+            	if(count==5){
+            			console.log("empty");
+            		}else{
+            			marker=marker+1;
+            			arrayOfLines[marker]="";
+            			rows.forEach(function(d){arrayOfLines[marker]+=d+",";});
+            		}
+            	
                 
             });
 			
