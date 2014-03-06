@@ -24,8 +24,10 @@
 
             var content = root.find(".wikitable"); // find table
             var headers = content.find("tbody tr:first th"); // find first tr and th's
+            var body = content.find("tbody tr:gt(10)"); //find rows starting at year 0
             var arrayOfLines = [];
-			//console.log($(headers).text());
+            var titles=[];
+			console.log($(body));
 			
 			//Get headers
             $.each(headers, function(index, value) {
@@ -34,15 +36,42 @@
                 	
                 	if($(value).find("a[title]").text()){
                 		console.log($(value).find("a[title]").text()); // print text
-                		arrayOfLines.push($(value).find("a[title]").text());
+                		titles.push($(value).find("a[title]").text());
                 	}else{
                 		//var r= $(value).contents(':not(p)').text()
                 		console.log($(value).find(":first").text()); // print text
-                		arrayOfLines.push($(value).find(":first").text());
+                		titles.push($(value).find(":first").text());
                 	//console.log(headers.find("a[title]").text());
                 	}
                 }
             });
+            
+            arrayOfLines[0]="";
+            titles.forEach(function(d){arrayOfLines[0]+=d+",";});
+            var rows=[];
+            
+            //get body
+			$.each(body, function(index, value) {
+				rows=[];
+				//$(value)=$(value).slice(0,5)
+				for(i=0; i<=5; i++){		
+                	console.log($(value).find("td").eq(i).text());//This is getting you
+                	//what you want... now what?
+                	
+                	if($(value).find("td").eq(i).text() != ""){
+                		//console.log(convertToInt($(value).text()) );
+                		rows.push(convertToInt($(value).find("td").eq(i).text() ));
+                	}else{
+                		//console.log($(value).text());
+                		rows.push($(value).find("td").eq(i).text());
+                	}
+            	}
+            	
+            	arrayOfLines[index+1]="";
+            	rows.forEach(function(d){arrayOfLines[index+1]+=d+",";});
+                
+            });
+			
 			
 			console.log(arrayOfLines);
 			saveToFile(arrayOfLines,"test.txt")
