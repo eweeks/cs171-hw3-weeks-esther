@@ -22,30 +22,15 @@
             root = $("<div></div>")
             root.html(data.responseText)
 
-            var content = root.find(".wikitable"); // find table
-            var headers = content.find("tbody tr:first th"); // find first tr and th's
-            var arrayOfLines = [];
-			//console.log($(headers).text());
-			
-			//Get headers
-            $.each(headers, function(index, value) {
-            	//only need first 6 columns (0-5 indexing, filter this)
-            	if(index <= 5){
-                	
-                	if($(value).find("a[title]").text()){
-                		console.log($(value).find("a[title]").text()); // print text
-                		arrayOfLines.push($(value).find("a[title]").text());
-                	}else{
-                		//var r= $(value).contents(':not(p)').text()
-                		console.log($(value).find(":first").text()); // print text
-                		arrayOfLines.push($(value).find(":first").text());
-                	//console.log(headers.find("a[title]").text());
-                	}
-                }
+            var content = root.find("#content"); // find all the nodes that have ID "content"
+            var h2s = content.find(".mw-headline"); // search in all "content" nodes for nodes of class ".mw-headline"
+
+            $.each(h2s, function(index, value) {
+                console.log($(value).text()); // print text
+                console.log("index is"+index);
             });
 			
-			console.log(arrayOfLines);
-			saveToFile(arrayOfLines,"test.txt")
+			saveToFile(["Hello World"],"test.txt")
         },
         error: function() {
             return console.log("error");
