@@ -62,20 +62,22 @@
 		//Need to set upper domain in more appropriate manner
           xScale = d3.scale.linear().domain([0,100]).range([0, bbVis.w]);  // define the right domain generically
 
-		  // example that translates to the bottom left of our vis space:
+		/*  // example that translates to the bottom left of our vis space:
 		  var visFrame = svg.append("g").attr({
 		      "transform": "translate(" + bbVis.x + "," + (bbVis.y + bbVis.h) + ")",
 		  	  //....
 			  
 		  });
 		  
-		  visFrame.append("rect");
+		 visFrame.append("rect");*/
 		  //....
 		  
 		 //find way to select the pop. max 
         yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
 
-//        xAxis = ..
+	      xAxis = d3.svg.axis()
+	        	.scale(xScale)
+	        	.orient("bottom");
 
 			//var y=d3.scale.linear().range([ ]);
 	        yAxis = d3.svg.axis()
@@ -86,8 +88,15 @@
 			// add y axis to svg !
 			svg.append("g")
 			.attr("class", "axis line")
-			.attr("transform", "translate(" + (bbVis.y + bbVis.h) + "," + bbVis.x + ")")
+			.attr("transform", "translate(" + bbVis.x +  "," +  (bbVis.y + bbVis.h)+ ")")
     		.call(yAxis);
+    		
+    		//add x axis
+    		
+    		svg.append("g")
+			.attr("class", "axis line")
+			.attr("transform", "translate("+bbVis.x+" ,"+height+")")
+    		.call(xAxis);
 
 
     };
