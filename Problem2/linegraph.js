@@ -41,9 +41,15 @@
         //var sources = d3.keys(data[0]) ;
         	
         //console.log(sources);
-        	
+        
+        //Must be a better way of doing this than just coding it all in... FIX!	
         data.forEach(function(d, i){
-        	dataSet.push({"year": d.Year, "hyde": d.HYDE});
+        	dataSet.push({"year": d.Year, 
+        				"USCensus": d.UnitedStatesCensusBureau,
+        				"populationBureau": d.PopulationReferenceBureau,
+        				"UN": d.UnitedNationsDepartmentofEconomicandSocialAffairs,
+        				"hyde": d.HYDE,
+        				"maddison": d.Maddison,} );
         });
 		console.log(dataSet);
 		
@@ -53,6 +59,7 @@
     createVis = function() {
         var xAxis, xScale, yAxis,  yScale;
 
+		//Need to set upper domain in more appropriate manner
           xScale = d3.scale.linear().domain([0,100]).range([0, bbVis.w]);  // define the right domain generically
 
 		  // example that translates to the bottom left of our vis space:
@@ -65,11 +72,22 @@
 		  visFrame.append("rect");
 		  //....
 		  
-//        yScale = .. // define the right y domain and range -- use bbVis
+		 //find way to select the pop. max 
+        yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
 
 //        xAxis = ..
-//        yAxis = ..
-//        // add y axis to svg !
+
+			//var y=d3.scale.linear().range([ ]);
+	        yAxis = d3.svg.axis()
+	        	.scale(yScale)
+	        	.orient("left")
+	        	.ticks(5);
+//        
+			// add y axis to svg !
+			svg.append("g")
+			.attr("class", "axis line")
+			.attr("transform", "translate(" + (bbVis.y + bbVis.h) + "," + bbVis.x + ")")
+    		.call(yAxis);
 
 
     };
