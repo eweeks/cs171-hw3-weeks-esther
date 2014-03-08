@@ -1,7 +1,8 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 <html>
 <head>
-    <title></title>
+    <title>Problem 2 cs171-hw3</title>
 
     <script src="../libs/jquery-1.10.1.js"></script>
     <script src="../libs/jquery.xdomainajax.js"></script>
@@ -36,11 +37,11 @@
                 	
                 	if($(value).find("a[title]").text()){
                 		console.log($(value).find("a[title]").text()); // print text
-                		titles.push($(value).find("a[title]").text());
+                		titles.push($(value).find("a[title]").text().replace(/ /g,''));
                 	}else{
                 		//var r= $(value).contents(':not(p)').text()
                 		console.log($(value).find(":first").text()); // print text
-                		titles.push($(value).find(":first").text());
+                		titles.push($(value).find(":first").text().replace(/ /g,''));
                 	//console.log(headers.find("a[title]").text());
                 	}
                 }
@@ -50,6 +51,7 @@
             titles.forEach(function(d){arrayOfLines[0]+=d+",";});
             var rows=[];
             var marker=0;
+            
             //get body
 			$.each(body, function(index, value) {
 				rows=[];
@@ -88,7 +90,7 @@
 			
 			
 			console.log(arrayOfLines);
-			saveToFile(arrayOfLines,"test.txt")
+			saveToFile(arrayOfLines,"timeline.csv")
         },
         error: function() {
             return console.log("error");

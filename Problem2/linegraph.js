@@ -34,7 +34,19 @@
     d3.csv("timeline.csv", function(data) {
 
         // convert your csv data and add it to dataSet
-
+        console.log(data);
+        console.log(data[1].Year);
+        //var s = [];
+        //s.push(data[0]);
+        //var sources = d3.keys(data[0]) ;
+        	
+        //console.log(sources);
+        	
+        data.forEach(function(d, i){
+        	dataSet.push({"year": d.Year, "hyde": d.HYDE});
+        });
+		console.log(dataSet);
+		
         return createVis();
     });
 
