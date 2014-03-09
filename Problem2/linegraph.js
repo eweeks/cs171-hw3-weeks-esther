@@ -10,20 +10,25 @@
         left: 50
     };
 
-    width = 960 - margin.left - margin.right;
+    width = 1360 - margin.left - margin.right;
 
-    height = 300 - margin.bottom - margin.top;
+    height = 600 - margin.bottom - margin.top;
 
     bbVis = {
         x: 0 + 100,
         y: 10,
         w: width - 100,
-        h: 220
+        h: height-100,
     };
 
     dataSet = [];
-    var un= [];
+    var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
     var USCensus=[];
+    var populationBureau=[];
+    var UN= [];
+    var hyde =[];
+    var maddison=[];
+    
 
     svg = d3.select("#vis").append("svg").attr({
         width: width + margin.left + margin.right,
@@ -37,19 +42,19 @@
 
         // convert your csv data and add it to dataSet
         console.log(data);
-        console.log(data[1].Year);
+        //console.log(data[1].Year);
         //var s = [];
         //s.push(data[0]);
         //var sources = d3.keys(data[0]) ;
         	
         //console.log(sources);
         
-        
         //Must be a better way of doing this than just coding it all in... FIX!	
         data.forEach(function(d, i){
+        	console.log(data[i].PopulationReferenceBureau);
         	dataSet.push({"year": d.Year, 
-        				"USCensus": parseInt(d.UnitedStatesCensusBureau),
-        				"populationBureau": parseInt(d.PopulationReferenceBureau),
+        				//"USCensus": parseInt(d.UnitedStatesCensusBureau),
+        				//"populationBureau": parseInt(d.PopulationReferenceBureau),
         				/*"UN": parseInt(
         						function(d){
         						if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
@@ -64,13 +69,20 @@
         				"maddison": parseInt(d.Maddison),} );
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
-        			un.push({"year": d.Year, "UN": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
-        		}else if(d.UnitedStatesCensusBureau !== "" ){
-        			USCensus.push({"year": d.Year, "USCensus": parseInt(d.UnitedStatesCensusBureau) });
+        			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        		};
+        		if(d.UnitedStatesCensusBureau !== "" ){
+        			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
+        		};
+        		if(d.PopulationReferenceBureau !== ""){
+        			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
         		}
         
         });
-		console.log(dataSet);
+        console.log("Is");
+		console.log(populationBureau);
+		console.log(UN);
+		console.log(USCensus);
 		
         return createVis();
     });
@@ -127,14 +139,14 @@
     var line = d3.svg.line()
     	.interpolate("linear") 
     	.x(function(d) { return xScale(d.year); })//not sure this is right
-    	.y(function(d) { return yScale(d.UN); });//not sure this is right
+    	.y(function(d) { return yScale(d.pop); });//not sure this is right
     	
     
     //draw circles
     //var dots = 
     
     svg.selectAll(".point")
-    				.data(un)
+    				.data(UN)
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "black")
@@ -143,15 +155,15 @@
     					return xScale(d.year);
     				})
     				.attr("cy", function(d){
-    					return yScale(d.UN);
+    					return yScale(d.pop);
     				})
     				.attr("r", "2");
     				
-    	console.log(un);
+    	//console.log(UN);
 
       //path function, calls line function
       svg.append("path")
-      		.datum(un)
+      		.datum(UN)
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
@@ -162,15 +174,8 @@
 	
 	
 	//repeat code just to test..
-	console.log(USCensus);
-	
-	    //draw lines
-    var line = d3.svg.line()
-    	.interpolate("linear") 
-    	.x(function(d) { return xScale(d.year); })//not sure this is right
-    	.y(function(d) { return yScale(d.USCensus); });//not sure this is right
-    	
-    
+	//console.log(USCensus);
+
     //draw circles
     //var dots = 
     
@@ -184,7 +189,7 @@
     					return xScale(d.year);
     				})
     				.attr("cy", function(d){
-    					return yScale(d.USCensus);
+    					return yScale(d.pop);
     				})
     				.attr("r", "2");
     				
