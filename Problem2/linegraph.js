@@ -51,8 +51,8 @@
         
         //Must be a better way of doing this than just coding it all in... FIX!	
         data.forEach(function(d, i){
-        	console.log(data[i].PopulationReferenceBureau);
-        	dataSet.push({"year": d.Year, 
+        	//console.log(data[i].PopulationReferenceBureau);
+        	//dataSet.push({"year": d.Year, 
         				//"USCensus": parseInt(d.UnitedStatesCensusBureau),
         				//"populationBureau": parseInt(d.PopulationReferenceBureau),
         				/*"UN": parseInt(
@@ -65,8 +65,8 @@
         					//going about this the wrong way... push if...*/
         						
         					
-        				"hyde": parseInt(d.HYDE),
-        				"maddison": parseInt(d.Maddison),} );
+        				//"hyde": parseInt(d.HYDE),
+        				//"maddison": parseInt(d.Maddison),} );
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
@@ -76,12 +76,20 @@
         		};
         		if(d.PopulationReferenceBureau !== ""){
         			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
+        		};
+        		
+        		if(d.HYDE !== ""){
+        			hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
+        		};
+        		
+        		if(d.Maddison !== ""){
+        			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
         		}
         
         });
         console.log("Is");
-		console.log(populationBureau);
-		console.log(UN);
+		console.log(hyde);
+		console.log(maddison);
 		console.log(USCensus);
 		
         return createVis();
@@ -178,9 +186,10 @@
 
     //draw circles
     //var dots = 
-    
+    names.forEach(function(j, e){
+    console.log(names[e]);
     svg.selectAll(".point")
-    				.data(USCensus)
+    				.data(names[e])
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "red")
@@ -197,11 +206,13 @@
 
       //path function, calls line function
       svg.append("path")
-      		.datum(USCensus)
+      		.datum(names[e])
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
       .attr("stroke", "red")
       .attr("d", line);
+
+	});
 
     };
