@@ -23,6 +23,7 @@
 
     dataSet = [];
     var un= [];
+    var USCensus=[];
 
     svg = d3.select("#vis").append("svg").attr({
         width: width + margin.left + margin.right,
@@ -64,6 +65,8 @@
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			un.push({"year": d.Year, "UN": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        		}else if(d.UnitedStatesCensusBureau !== "" ){
+        			USCensus.push({"year": d.Year, "USCensus": parseInt(d.UnitedStatesCensusBureau) });
         		}
         
         });
@@ -126,7 +129,11 @@
     	.x(function(d) { return xScale(d.year); })//not sure this is right
     	.y(function(d) { return yScale(d.UN); });//not sure this is right
     	
-    	var dots = svg.selectAll(".point")
+    
+    //draw circles
+    //var dots = 
+    
+    svg.selectAll(".point")
     				.data(un)
     				.enter()
     				.append("svg:circle")
@@ -142,7 +149,7 @@
     				
     	console.log(un);
 
-      
+      //path function, calls line function
       svg.append("path")
       		.datum(un)
       		.attr("class", "axis")
@@ -151,6 +158,45 @@
       .attr("stroke", "black")
       .attr("d", line);
 
-	dots;
+	//dots;
+	
+	
+	//repeat code just to test..
+	console.log(USCensus);
+	
+	    //draw lines
+    var line = d3.svg.line()
+    	.interpolate("linear") 
+    	.x(function(d) { return xScale(d.year); })//not sure this is right
+    	.y(function(d) { return yScale(d.USCensus); });//not sure this is right
+    	
+    
+    //draw circles
+    //var dots = 
+    
+    svg.selectAll(".point")
+    				.data(USCensus)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "red")
+    				.attr("fill", "red")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.USCensus);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
+
+      //path function, calls line function
+      svg.append("path")
+      		.datum(USCensus)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "red")
+      .attr("d", line);
 
     };
