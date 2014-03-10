@@ -21,8 +21,7 @@
         h: height-100,
     };
 
-    //dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
-    dataSet = {data:[] };
+    dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
     var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
     var USCensus=[];
     var populationBureau=[];
@@ -72,25 +71,25 @@
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
-        			dataSet.data.push({ "source": "UN", "year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
         		};
         		if(d.UnitedStatesCensusBureau !== "" ){
         			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
-        			dataSet.data.push({"source": "USCensus", "year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
+        			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         		};
         		if(d.PopulationReferenceBureau !== ""){
         			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
-        			dataSet.data.push({"source":"populationBureau", "year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
+        			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
         		};
         		
         		if(d.HYDE !== ""){
         			hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
-        			dataSet.data.push({"source": "hyde", "year":d.Year, "pop": parseInt(d.HYDE) });
+        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
         		};
         		
         		if(d.Maddison !== ""){
         			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
-        			dataSet.data.push({"source": "maddison", "year":d.Year, "pop":parseInt(d.Maddison) });
+        			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
         		}
         
         });
@@ -171,21 +170,19 @@
   //  visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
     
     
+    //not ideal, but draws all the data...
+    //UN
     svg.selectAll(".point")
-    				.data(dataSet.data)
+    				.data(dataSet.UN)
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "red")
-    				.attr("fill", function(d) {
-						return fill(d.source);
-					})
+    				.attr("fill", "red")
     				.attr("cx", function(d){
-    					console.log("d is");
     					return xScale(d.year);
     					
     				})
     				.attr("cy", function(d){
-    					console.log("d is");
     					return yScale(d.pop);
     				})
     				.attr("r", "2");
@@ -194,14 +191,122 @@
 
       //path function, calls line function
       svg.append("path")
-      		.datum(dataSet.data)
+      		.datum(dataSet.UN)
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
-      .attr("stroke",  function(d) {
-						return fill(d.source);
-					})
+      .attr("stroke", "red")
       .attr("d", line);
+      
+      //USCensus
+          svg.selectAll(".point")
+    				.data(dataSet.USCensus)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "blue")
+    				.attr("fill", "red")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    					
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.pop);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
+
+      //path function, calls line function
+      svg.append("path")
+      		.datum(dataSet.USCensus)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "blue")
+      .attr("d", line);
+
+	//populationBureau
+	 svg.selectAll(".point")
+    				.data(dataSet.populationBureau)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "green")
+    				.attr("fill", "red")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    					
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.pop);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
+
+      //path function, calls line function
+      svg.append("path")
+      		.datum(dataSet.populationBureau)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "green")
+      .attr("d", line);
+
+		//hyde
+	 svg.selectAll(".point")
+    				.data(dataSet.hyde)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "orange")
+    				.attr("fill", "red")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    					
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.pop);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
+
+      //path function, calls line function
+      svg.append("path")
+      		.datum(dataSet.hyde)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "orange")
+      .attr("d", line);
+      
+      
+      	//maddison
+	 svg.selectAll(".point")
+    				.data(dataSet.maddison)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "purple")
+    				.attr("fill", "red")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    					
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.pop);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
+
+      //path function, calls line function
+      svg.append("path")
+      		.datum(dataSet.maddison)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "purple")
+      .attr("d", line);
+
 
 	//});
 
