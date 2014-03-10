@@ -21,7 +21,8 @@
         h: height-100,
     };
 
-    dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
+    //dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
+    dataSet = {data:[] };
     var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
     var USCensus=[];
     var populationBureau=[];
@@ -71,25 +72,25 @@
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
-        			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        			dataSet.data.push({ "source": "UN", "year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
         		};
         		if(d.UnitedStatesCensusBureau !== "" ){
         			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
-        			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
+        			dataSet.data.push({"source": "USCensus", "year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         		};
         		if(d.PopulationReferenceBureau !== ""){
         			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
-        			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
+        			dataSet.data.push({"source":"populationBureau", "year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
         		};
         		
         		if(d.HYDE !== ""){
         			hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
-        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
+        			dataSet.data.push({"source": "hyde", "year":d.Year, "pop": parseInt(d.HYDE) });
         		};
         		
         		if(d.Maddison !== ""){
         			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
-        			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
+        			dataSet.data.push({"source": "maddison", "year":d.Year, "pop":parseInt(d.Maddison) });
         		}
         
         });
@@ -171,11 +172,13 @@
     
     
     svg.selectAll(".point")
-    				.data(dataSet.UN)
+    				.data(dataSet.data)
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "red")
-    				.attr("fill", "red")
+    				.attr("fill", function(d) {
+						return fill(d.source);
+					})
     				.attr("cx", function(d){
     					console.log("d is");
     					return xScale(d.year);
@@ -191,11 +194,13 @@
 
       //path function, calls line function
       svg.append("path")
-      		.datum(dataSet.UN)
+      		.datum(dataSet.data)
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
-      .attr("stroke", "red")
+      .attr("stroke",  function(d) {
+						return fill(d.source);
+					})
       .attr("d", line);
 
 	//});
