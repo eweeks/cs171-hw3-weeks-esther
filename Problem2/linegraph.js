@@ -12,7 +12,7 @@
 
     width = 1360 - margin.left - margin.right;
 
-    height = 600 - margin.bottom - margin.top;
+    height = 900 - margin.bottom - margin.top;
 
     bbVis = {
         x: 0 + 100,
@@ -176,8 +176,8 @@
     				.data(dataSet.UN)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "red")
-    				.attr("fill", "red")
+    				.attr("stroke", "brown")
+    				.attr("fill", "brown")
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -195,35 +195,9 @@
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
-      .attr("stroke", "red")
+      .attr("stroke", "brown")
       .attr("d", line);
       
-      //USCensus
-          svg.selectAll(".point")
-    				.data(dataSet.USCensus)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("stroke", "blue")
-    				.attr("fill", "red")
-    				.attr("cx", function(d){
-    					return xScale(d.year);
-    					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "2");
-    				
-    	//console.log(un);
-
-      //path function, calls line function
-      svg.append("path")
-      		.datum(dataSet.USCensus)
-      		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1px")
-      .attr("stroke", "blue")
-      .attr("d", line);
 
 	//populationBureau
 	 svg.selectAll(".point")
@@ -231,7 +205,7 @@
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "green")
-    				.attr("fill", "red")
+    				.attr("fill", "green")
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -251,14 +225,43 @@
       .attr("stroke-width", "1px")
       .attr("stroke", "green")
       .attr("d", line);
+      
+      
+      	//maddison
+	 svg.selectAll(".point")
+    				.data(dataSet.maddison)
+    				.enter()
+    				.append("svg:circle")
+    				.attr("stroke", "purple")
+    				.attr("fill", "purple")
+    				.attr("cx", function(d){
+    					return xScale(d.year);
+    					
+    				})
+    				.attr("cy", function(d){
+    					return yScale(d.pop);
+    				})
+    				.attr("r", "2");
+    				
+    	//console.log(un);
 
-		//hyde
+      //path function, calls line function
+      svg.append("path")
+      		.datum(dataSet.maddison)
+      		.attr("class", "axis")
+      .attr("fill", "none")
+      .attr("stroke-width", "1px")
+      .attr("stroke", "purple")
+      .attr("d", line);
+      
+      
+      		//hyde
 	 svg.selectAll(".point")
     				.data(dataSet.hyde)
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "orange")
-    				.attr("fill", "red")
+    				.attr("fill", "orange")
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -278,15 +281,14 @@
       .attr("stroke-width", "1px")
       .attr("stroke", "orange")
       .attr("d", line);
-      
-      
-      	//maddison
-	 svg.selectAll(".point")
-    				.data(dataSet.maddison)
+
+	      //USCensus
+          svg.selectAll(".point")
+    				.data(dataSet.USCensus)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "purple")
-    				.attr("fill", "red")
+    				.attr("stroke", "blue")
+    				.attr("fill", "blue")
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -300,11 +302,11 @@
 
       //path function, calls line function
       svg.append("path")
-      		.datum(dataSet.maddison)
+      		.datum(dataSet.USCensus)
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
-      .attr("stroke", "purple")
+      .attr("stroke", "blue")
       .attr("d", line);
 
 
