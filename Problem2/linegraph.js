@@ -21,13 +21,14 @@
         h: height-100,
     };
 
-    dataSet = [];
+    dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
     var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
     var USCensus=[];
     var populationBureau=[];
     var UN= [];
     var hyde =[];
     var maddison=[];
+    var fill = d3.scale.category10();
     
 
     svg = d3.select("#vis").append("svg").attr({
@@ -70,27 +71,32 @@
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
         		};
         		if(d.UnitedStatesCensusBureau !== "" ){
         			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
+        			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         		};
         		if(d.PopulationReferenceBureau !== ""){
         			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
+        			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
         		};
         		
         		if(d.HYDE !== ""){
         			hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
+        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
         		};
         		
         		if(d.Maddison !== ""){
         			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
+        			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
         		}
         
         });
         console.log("Is");
-		console.log(hyde);
-		console.log(maddison);
-		console.log(USCensus);
+		//console.log(hyde);
+		//console.log(maddison);
+		console.log(dataSet);
 		
         return createVis();
     });
@@ -110,7 +116,7 @@
 		  
 		 visFrame.append("rect");
 		  //....
-		  
+		//visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
 		  
 		  //Color Scale
 		  var color = d3.scale.linear()
@@ -149,34 +155,7 @@
     	.x(function(d) { return xScale(d.year); })//not sure this is right
     	.y(function(d) { return yScale(d.pop); });//not sure this is right
     	
-    
-    //draw circles
-    //var dots = 
-    
-    svg.selectAll(".point")
-    				.data(UN)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("stroke", "black")
-    				.attr("fill", "black")
-    				.attr("cx", function(d){
-    					return xScale(d.year);
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "2");
-    				
-    	//console.log(UN);
 
-      //path function, calls line function
-      svg.append("path")
-      		.datum(UN)
-      		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1px")
-      .attr("stroke", "black")
-      .attr("d", line);
 
 	//dots;
 	
@@ -186,18 +165,24 @@
 
     //draw circles
     //var dots = 
-    names.forEach(function(j, e){
-    console.log(names[e]);
+   // names.forEach(function(j, e){
+    //console.log(names[e]);
+  //  visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
+    
+    
     svg.selectAll(".point")
-    				.data(names[e])
+    				.data(dataSet.UN)
     				.enter()
     				.append("svg:circle")
     				.attr("stroke", "red")
     				.attr("fill", "red")
     				.attr("cx", function(d){
+    					console.log("d is");
     					return xScale(d.year);
+    					
     				})
     				.attr("cy", function(d){
+    					console.log("d is");
     					return yScale(d.pop);
     				})
     				.attr("r", "2");
@@ -206,13 +191,13 @@
 
       //path function, calls line function
       svg.append("path")
-      		.datum(names[e])
+      		.datum(dataSet.UN)
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1px")
       .attr("stroke", "red")
       .attr("d", line);
 
-	});
+	//});
 
     };
