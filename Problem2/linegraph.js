@@ -52,6 +52,7 @@
         
         //Must be a better way of doing this than just coding it all in... FIX!	
         data.forEach(function(d, i){
+       // console.log(UN.length);
         	//console.log(data[i].PopulationReferenceBureau);
         	//dataSet.push({"year": d.Year, 
         				//"USCensus": parseInt(d.UnitedStatesCensusBureau),
@@ -70,9 +71,24 @@
         				//"maddison": parseInt(d.Maddison),} );
         
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
+        			//console.log("full");
+        			//console.log(d.Year);
+        			var start;
+        			if(dataSet.UN.length == 0){
+        				start=d.Year;
+        			}
         			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
-        			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
+        			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
+        				"inter": "no", "start": start  });
         		};
+        		
+        		if(d.UnitedNationsDepartmentofEconomicandSocialAffairs == "" && dataSet.UN.length !== 1 ){
+        			//console.log("empty");
+        			//console.log(d.Year);
+        			//console.log(dataSet.UN.length);
+        			dataSet.UN.push({"year": d.Year, "pop": "", "inter": "yes" });
+        		};
+        		
         		if(d.UnitedStatesCensusBureau !== "" ){
         			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
@@ -93,15 +109,51 @@
         		}
         
         });
-        console.log("Is");
+        //console.log("Is");
 		//console.log(hyde);
 		//console.log(maddison);
 		console.log(dataSet);
 		
+	
+		
+		
         return createVis();
     });
-
+	
+		
+	
     createVis = function() {
+    
+    //outside of data loop.. may be calling createVis too soon...
+		//find and set end values here
+		var range =[];
+		var domain =[];
+		
+		//interpolate here
+		dataSet.UN.forEach(function(d, i){
+			if (d.pop !== ""){
+				domain.push(d.year);
+				range.push(d.pop);
+			}
+			//console.log(d.pop);
+		});
+    
+    	console.log(range);
+    	console.log(domain);
+    	
+    	//create scale
+    	var inter = d3.scale.linear()
+    				.domain(domain)
+    				.range(range);
+    	//loop thru array again, and pass to scale as needed..
+    	
+    	dataSet.UN.forEach(function(d, i){
+    		if(d.inter == "yes"){
+    			d.pop= inter(d.year);
+    		}
+    	});
+    	 console.log(dataSet.UN);
+    	
         var xAxis, xScale, yAxis,  yScale;
 
 		//Need to set upper domain in more appropriate manner
@@ -176,8 +228,20 @@
     				.data(dataSet.UN)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "brown")
-    				.attr("fill", "brown")
+    				.attr("stroke", function(d){
+    					if(d.inter == "yes"){
+    						return "green";
+    					}else{
+    						return "brown";
+    					}
+    				})
+    				.attr("fill", function(d){
+    					if(d.inter == "yes"){
+    						return "green";
+    					}else{
+    						return "brown";
+    					}
+    				})
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
