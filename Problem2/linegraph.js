@@ -211,33 +211,38 @@
     		}
     	});
     	
-    	/*//Maddison
+    	//Maddison
+    	var maDom=[];
+    	var maRang=[];
     	dataSet.maddison.forEach(function(d, i){
 			if (d.pop !== ""){
-				domain.push(d.year);
-				range.push(d.pop);
+				maDom.push(d.year);
+				maRang.push(d.pop);
 			}
 		});
 		
 		dataSet.maddison.forEach(function(d, i){
     		if(d.inter == "yes"){
-    			d.pop= inter(d.year);
+    			d.pop= iScale(maDom, maRang, d.year);
     		}
     	});
     	
     	//populationBureau
+    	var pbDom=[];
+    	var pbRang=[];
+    	
     	dataSet.populationBureau.forEach(function(d, i){
 			if (d.pop !== ""){
-				domain.push(d.year);
-				range.push(d.pop);
+				pbDom.push(d.year);
+				pbRang.push(d.pop);
 			}
 		});
 		
 		dataSet.populationBureau.forEach(function(d, i){
     		if(d.inter == "yes"){
-    			d.pop= inter(d.year);
+    			d.pop= iScale(pbDom, pbRang, d.year);
     		}
-    	});*/
+    	});
 
     	
     	console.log(dataSet)
