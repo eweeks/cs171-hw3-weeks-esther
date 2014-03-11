@@ -22,12 +22,12 @@
     };
 
     dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
-    var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
+   /* var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
     var USCensus=[];
     var populationBureau=[];
     var UN= [];
     var hyde =[];
-    var maddison=[];
+    var maddison=[];*/
     var fill = d3.scale.category10();
     
 
@@ -50,74 +50,59 @@
         	
         //console.log(sources);
         
-        //Must be a better way of doing this than just coding it all in... FIX!	
+        //Must be a better way of doing this than just coding it all in... 
         data.forEach(function(d, i){
-       // console.log(UN.length);
-        	//console.log(data[i].PopulationReferenceBureau);
-        	//dataSet.push({"year": d.Year, 
-        				//"USCensus": parseInt(d.UnitedStatesCensusBureau),
-        				//"populationBureau": parseInt(d.PopulationReferenceBureau),
-        				/*"UN": parseInt(
-        						function(d){
-        						if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
-        							return
-        						d.UnitedNationsDepartmentofEconomicandSocialAffairs;
-        					}
-        					}),
-        					//going about this the wrong way... push if...*/
-        						
-        					
-        				//"hyde": parseInt(d.HYDE),
-        				//"maddison": parseInt(d.Maddison),} );
-        
+     
+        		//UN
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
-        			//console.log("full");
-        			//console.log(d.Year);
-        			var start;
-        			if(dataSet.UN.length == 0){
-        				start=d.Year;
-        			}
-        			UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs) });
         			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
-        				"inter": "no", "start": start  });
+        				"inter": "no", });
         		};
         		
-        		if(d.UnitedNationsDepartmentofEconomicandSocialAffairs == "" && dataSet.UN.length !== 1 ){
-        			//console.log("empty");
-        			//console.log(d.Year);
-        			//console.log(dataSet.UN.length);
+        		if(d.UnitedNationsDepartmentofEconomicandSocialAffairs == "" && dataSet.UN.length !== 0 ){
         			dataSet.UN.push({"year": d.Year, "pop": "", "inter": "yes" });
         		};
         		
+        		//US Census
         		if(d.UnitedStatesCensusBureau !== "" ){
-        			USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
-        			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
-        		};
-        		if(d.PopulationReferenceBureau !== ""){
-        			populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
-        			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau) });
+        			//USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
+        			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau),
+        				"inter": "no", });
         		};
         		
+        		if(d.UnitedStatesCensusBureau == "" && dataSet.USCensus.length !== 0 ){
+        			dataSet.USCensus.push({"year": d.Year, "pop": "", "inter": "yes" });
+        		};
+        		
+        		//PopBureau
+        		if(d.PopulationReferenceBureau !== ""){
+        			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau),
+        			"inter": "no" });
+        		};
+        		
+        		if(d.PopulationReferenceBureau == "" && dataSet.populationBureau.length !== 0 ){
+        			dataSet.populationBureau.push({"year": d.Year, "pop": "", "inter": "yes" });
+        		};
+        		
+        		//Hyde
         		if(d.HYDE !== ""){
-        			hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
-        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
+        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE), "inter": "no" });
         		};
         		
         		if(d.HYDE == "" && dataSet.hyde.length !== 0 ){
         			dataSet.hyde.push({"year": d.Year, "pop": "", "inter": "yes" });
         		};
         		
+        		//Maddison
         		if(d.Maddison !== ""){
-        			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
-        			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
+        			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison),
+        				"inter": "no"  });
         		}
-        
+        		if(d.Maddison == "" && dataSet.maddison.length !== 0 ){
+        			dataSet.maddison.push({"year": d.Year, "pop": "", "inter": "yes" });
+        		};
         });
-        //console.log("Is");
-		//console.log(hyde);
-		//console.log(maddison);
-		console.log(dataSet);
-		
+  
 	
 		
 		
@@ -180,7 +165,7 @@
     			d.pop= inter(d.year);
     		}
     	});
-    	console.log(dataSet.hyde)
+    	console.log(dataSet)
     
     	
     	
