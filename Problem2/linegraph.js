@@ -114,14 +114,37 @@
     createVis = function() {
     
     //outside of data loop.. may be calling createVis too soon...
-		//find and set end values here
 		var range =[];
 		var domain =[];
 		
+		//Runs through datasets, finds last entered value, removes empty end data
+		
+		//UN
+		while(dataSet.UN[dataSet.UN.length-1].pop == ""){
+			dataSet.UN.pop();
+		}
+		
+		//USCensus
+		while(dataSet.USCensus[dataSet.USCensus.length-1].pop == ""){
+			dataSet.USCensus.pop();
+		}
+		
+		//Hyde
 		while(dataSet.hyde[dataSet.hyde.length-1].pop == ""){
-			//console.log("empty");
 			dataSet.hyde.pop();
 		}
+		
+		//maddison
+		while(dataSet.maddison[dataSet.maddison.length-1].pop == ""){
+			dataSet.maddison.pop();
+		}
+		
+		
+		//populationBureau
+		while(dataSet.populationBureau[dataSet.populationBureau.length-1].pop == ""){
+			dataSet.populationBureau.pop();
+		}
+		
 		
 		console.log(dataSet.hyde);
 		
