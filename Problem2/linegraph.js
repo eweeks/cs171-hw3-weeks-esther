@@ -56,50 +56,53 @@
         		//UN
         		if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
         			dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
-        				"inter": "no", });
+        				"inter": "no", "name": "UN", });
         		};
         		
         		if(d.UnitedNationsDepartmentofEconomicandSocialAffairs == "" && dataSet.UN.length !== 0 ){
-        			dataSet.UN.push({"year": d.Year, "pop": "", "inter": "yes" });
+        			dataSet.UN.push({"year": d.Year, "pop": "", "inter": "yes", "name": "UN", });
         		};
         		
         		//US Census
         		if(d.UnitedStatesCensusBureau !== "" ){
         			//USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau),
-        				"inter": "no", });
+        				"inter": "no", "name": "USCensus", });
         		};
         		
         		if(d.UnitedStatesCensusBureau == "" && dataSet.USCensus.length !== 0 ){
-        			dataSet.USCensus.push({"year": d.Year, "pop": "", "inter": "yes" });
+        			dataSet.USCensus.push({"year": d.Year, "pop": "", "inter": "yes", "name": "USCensus", });
         		};
         		
         		//PopBureau
         		if(d.PopulationReferenceBureau !== ""){
         			dataSet.populationBureau.push({"year": d.Year, "pop": parseInt(d.PopulationReferenceBureau),
-        			"inter": "no" });
+        			"inter": "no", "name": "populationBureau" });
         		};
         		
         		if(d.PopulationReferenceBureau == "" && dataSet.populationBureau.length !== 0 ){
-        			dataSet.populationBureau.push({"year": d.Year, "pop": "", "inter": "yes" });
+        			dataSet.populationBureau.push({"year": d.Year, "pop": "", "inter": "yes",
+        			"name": "populationBureau", });
         		};
         		
         		//Hyde
         		if(d.HYDE !== ""){
-        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE), "inter": "no" });
+        			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE), "inter": "no",
+        			"name": "hyde", });
         		};
         		
         		if(d.HYDE == "" && dataSet.hyde.length !== 0 ){
-        			dataSet.hyde.push({"year": d.Year, "pop": "", "inter": "yes" });
+        			dataSet.hyde.push({"year": d.Year, "pop": "", "inter": "yes", "name": "hyde" });
         		};
         		
         		//Maddison
         		if(d.Maddison !== ""){
         			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison),
-        				"inter": "no"  });
+        				"inter": "no", "name": "maddison",  });
         		}
         		if(d.Maddison == "" && dataSet.maddison.length !== 0 ){
-        			dataSet.maddison.push({"year": d.Year, "pop": "", "inter": "yes" });
+        			dataSet.maddison.push({"year": d.Year, "pop": "", "inter": "yes", 
+        			"name": "maddison", });
         		};
         });
   
@@ -264,11 +267,7 @@
 		 visFrame.append("rect");
 		  //....
 		//visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
-		  
-		  //Color Scale
-		  var color = d3.scale.linear()
-    		.domain([-1, 0, 1])
-    		.range(["red", "white", "green"]); 
+
 		  
 		 //find way to select the pop. max 
         yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
@@ -325,14 +324,14 @@
     				.append("svg:circle")
     				.attr("stroke", function(d){
     					if(d.inter == "yes"){
-    						return "green";
+    						return d3.rgb("brown").brighter(4);
     					}else{
     						return "brown";
     					}
     				})
     				.attr("fill", function(d){
     					if(d.inter == "yes"){
-    						return "green";
+    						return d3.rgb("brown").brighter(4);
     					}else{
     						return "brown";
     					}
@@ -344,7 +343,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "2");
+    				.attr("r", "3");
     				
     	//console.log(un);
 
@@ -353,7 +352,7 @@
       		.datum(dataSet.UN)
       		.attr("class", "axis")
       .attr("fill", "none")
-      .attr("stroke-width", "1px")
+      .attr("stroke-width", "1.5px")
       .attr("stroke", "brown")
       .attr("d", line);
       
@@ -363,8 +362,20 @@
     				.data(dataSet.populationBureau)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "green")
-    				.attr("fill", "green")
+    				.attr("stroke", function(d){
+    					if(d.inter == "yes"){
+    						return "green";
+    					}else{
+    						return "green";
+    					}
+    				})
+    				.attr("fill", function(d){
+    					if(d.inter == "yes"){
+    						return "green";
+    					}else{
+    						return "green";
+    					}
+    				})
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
