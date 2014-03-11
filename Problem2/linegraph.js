@@ -145,36 +145,54 @@
 			dataSet.populationBureau.pop();
 		}
 		
-		
-		console.log(dataSet.hyde);
-		
 		//interpolate here
 		
-		//UN
-		dataSet.UN.forEach(function(d, i){
-			if (d.pop !== ""){
-				domain.push(d.year);
-				range.push(d.pop);
-			}
-			//console.log(d.pop);
-		});
-		
-    	//console.log(range);
-    	//console.log(domain);
-    	
-    	//create scale
-    	var inter = d3.scale.linear()
+		//create scale
+    	//var inter = d3.scale.linear()
+    	//			.domain(domain)
+    	//			.range(range);
+    				
+    	function iScale(domain, range, year){
+    		var inter = d3.scale.linear()
     				.domain(domain)
     				.range(range);
+    				
+    		return inter(year);
+    	}
+		
+		//UN
+		var unDom =[];
+		var unRang=[];
+		dataSet.UN.forEach(function(d, i){
+			if (d.pop !== ""){
+				unDom.push(d.year);
+				unRang.push(d.pop);
+			}
+		});
     				
     	//loop thru array again, and pass to scale as needed..
     	dataSet.UN.forEach(function(d, i){
     		if(d.inter == "yes"){
+    			d.pop= iScale(unDom, unRang, d.year);
+    		}
+    	});
+    	
+    	//USCensus
+    	dataSet.USCensus.forEach(function(d, i){
+			if (d.pop !== ""){
+				domain.push(d.year);
+				range.push(d.pop);
+			}
+		});
+    				
+    	//loop thru array again, and pass to scale as needed..
+    	dataSet.USCensus.forEach(function(d, i){
+    		if(d.inter == "yes"){
     			d.pop= inter(d.year);
     		}
     	});
-    	// console.log(dataSet.UN);
     	
+    	/*
     	//hyde
 		dataSet.hyde.forEach(function(d, i){
 			if (d.pop !== ""){
@@ -188,6 +206,36 @@
     			d.pop= inter(d.year);
     		}
     	});
+    	
+    	//Maddison
+    	dataSet.maddison.forEach(function(d, i){
+			if (d.pop !== ""){
+				domain.push(d.year);
+				range.push(d.pop);
+			}
+		});
+		
+		dataSet.maddison.forEach(function(d, i){
+    		if(d.inter == "yes"){
+    			d.pop= inter(d.year);
+    		}
+    	});
+    	
+    	//populationBureau
+    	dataSet.populationBureau.forEach(function(d, i){
+			if (d.pop !== ""){
+				domain.push(d.year);
+				range.push(d.pop);
+			}
+		});
+		
+		dataSet.populationBureau.forEach(function(d, i){
+    		if(d.inter == "yes"){
+    			d.pop= inter(d.year);
+    		}
+    	});*/
+
+    	
     	console.log(dataSet)
     
     	
