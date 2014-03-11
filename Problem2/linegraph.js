@@ -10,9 +10,9 @@
         left: 50
     };
 
-    width = 1360 - margin.left - margin.right;
+    width = 1500 - margin.left - margin.right;
 
-    height = 900 - margin.bottom - margin.top;
+    height = 1000 - margin.bottom - margin.top;
 
     bbVis = {
         x: 0 + 100,
@@ -103,6 +103,10 @@
         			dataSet.hyde.push({"year":d.Year, "pop": parseInt(d.HYDE) });
         		};
         		
+        		if(d.HYDE == "" && dataSet.hyde.length !== 0 ){
+        			dataSet.hyde.push({"year": d.Year, "pop": "", "inter": "yes" });
+        		};
+        		
         		if(d.Maddison !== ""){
         			maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
         			dataSet.maddison.push({"year":d.Year, "pop":parseInt(d.Maddison) });
@@ -129,7 +133,16 @@
 		var range =[];
 		var domain =[];
 		
+		while(dataSet.hyde[dataSet.hyde.length-1].pop == ""){
+			//console.log("empty");
+			dataSet.hyde.pop();
+		}
+		
+		console.log(dataSet.hyde);
+		
 		//interpolate here
+		
+		//UN
 		dataSet.UN.forEach(function(d, i){
 			if (d.pop !== ""){
 				domain.push(d.year);
@@ -137,22 +150,39 @@
 			}
 			//console.log(d.pop);
 		});
-    
-    	console.log(range);
-    	console.log(domain);
+		
+    	//console.log(range);
+    	//console.log(domain);
     	
     	//create scale
     	var inter = d3.scale.linear()
     				.domain(domain)
     				.range(range);
+    				
     	//loop thru array again, and pass to scale as needed..
-    	
     	dataSet.UN.forEach(function(d, i){
     		if(d.inter == "yes"){
     			d.pop= inter(d.year);
     		}
     	});
-    	 console.log(dataSet.UN);
+    	// console.log(dataSet.UN);
+    	
+    	//hyde
+		dataSet.hyde.forEach(function(d, i){
+			if (d.pop !== ""){
+				domain.push(d.year);
+				range.push(d.pop);
+			}
+		});
+		
+		dataSet.hyde.forEach(function(d, i){
+    		if(d.inter == "yes"){
+    			d.pop= inter(d.year);
+    		}
+    	});
+    	console.log(dataSet.hyde)
+    
+    	
     	
         var xAxis, xScale, yAxis,  yScale;
 
@@ -186,7 +216,7 @@
 	        yAxis = d3.svg.axis()
 	        	.scale(yScale)
 	        	.orient("left")
-	        	.ticks(5);
+	        	.ticks(8);
       
 			// add y axis to svg !
 			svg.append("g")
@@ -291,7 +321,7 @@
       .attr("d", line);
       
       
-      	//maddison
+      //maddison
 	 svg.selectAll(".point")
     				.data(dataSet.maddison)
     				.enter()
@@ -319,7 +349,7 @@
       .attr("d", line);
       
       
-      		//hyde
+      //hyde
 	 svg.selectAll(".point")
     				.data(dataSet.hyde)
     				.enter()
