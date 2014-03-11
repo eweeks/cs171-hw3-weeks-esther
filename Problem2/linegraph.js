@@ -178,36 +178,40 @@
     	});
     	
     	//USCensus
+    	var usDom=[];
+    	var usRang=[];
     	dataSet.USCensus.forEach(function(d, i){
 			if (d.pop !== ""){
-				domain.push(d.year);
-				range.push(d.pop);
+				usDom.push(d.year);
+				usRang.push(d.pop);
 			}
 		});
     				
     	//loop thru array again, and pass to scale as needed..
     	dataSet.USCensus.forEach(function(d, i){
     		if(d.inter == "yes"){
-    			d.pop= inter(d.year);
+    			d.pop= iScale(usDom, usRang, d.year);
     		}
     	});
     	
-    	/*
+    	
     	//hyde
+    	var hyDom=[];
+    	var hyRang=[];
 		dataSet.hyde.forEach(function(d, i){
 			if (d.pop !== ""){
-				domain.push(d.year);
-				range.push(d.pop);
+				hyDom.push(d.year);
+				hyRang.push(d.pop);
 			}
 		});
 		
 		dataSet.hyde.forEach(function(d, i){
     		if(d.inter == "yes"){
-    			d.pop= inter(d.year);
+    			d.pop= iScale(hyDom, hyRang, d.year);
     		}
     	});
     	
-    	//Maddison
+    	/*//Maddison
     	dataSet.maddison.forEach(function(d, i){
 			if (d.pop !== ""){
 				domain.push(d.year);
