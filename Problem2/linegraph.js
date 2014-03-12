@@ -133,8 +133,8 @@
     	//Scale for interpolation of data			
     	function iScale(domain, range, year){
     		var inter = d3.scale.linear()
-    			.domain(domain)
-    			.range(range);
+    					.domain(domain)
+    					.range(range);
     				
     		return inter(year);
     	}
@@ -233,167 +233,164 @@
 			"transform": "translate(" + bbVis.x + "," + (bbVis.y + bbVis.h) + ")",  
 		});
 		  
-		  
-		 //find way to select the pop. max ?
-        yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
+		//find way to select the pop. max ?
+		yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
 
-	      xAxis = d3.svg.axis()
+	    xAxis = d3.svg.axis()
 	        	.scale(xScale)
 	        	.orient("bottom")
 	        	.ticks(20);
 
-	        yAxis = d3.svg.axis()
+	    yAxis = d3.svg.axis()
 	        	.scale(yScale)
 	        	.orient("left")
 	        	.ticks(8);
       
-			// add y axis to svg
-			svg.append("g")
+		// add y axis to svg
+		svg.append("g")
 			.attr("class", "axis line")
 			.attr("transform", "translate(" + bbVis.x +  ",0)") //not sure if last value should be zero but looks ok..
     		.call(yAxis);
     		
-    		//add x axis
-    		svg.append("g")
+    	//add x axis
+    	svg.append("g")
 			.attr("class", "axis line")
 			.attr("transform", "translate(0 ,"+bbVis.h+")")
     		.call(xAxis);
     		
-    //draw lines
-    var line = d3.svg.line()
-    	.interpolate("linear") 
-    	.x(function(d) { return xScale(d.year); })//not sure this is right
-    	.y(function(d) { return yScale(d.pop); });//not sure this is right
+    	//draw lines
+   		var line = d3.svg.line()
+    			.interpolate("linear") 
+    			.x(function(d) { return xScale(d.year); })//not sure this is right
+    			.y(function(d) { return yScale(d.pop); });//not sure this is right
     	  
     
-    //not ideal, but draws all the data...
-    //UN
-    svg.selectAll(".point")
-    				.data(dataSet.UN)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("fill", "#DD1C77")
-    				.attr("fill-opacity", function(d){
-    						if(d.inter == "yes"){
-    							return 0.3;
-    						}else{
-    							return 0.9;
-    						}
-    				})
-    				.attr("cx", function(d){
-    					return xScale(d.year);
+    	//not ideal, but draws all the data...
+    	//UN
+    	svg.selectAll(".point")
+    		.data(dataSet.UN)
+    		.enter()
+    		.append("svg:circle")
+    		.attr("fill", "#DD1C77")
+    		.attr("fill-opacity", function(d){
+    			if(d.inter == "yes"){
+    				return 0.3;
+    			}else{
+    				return 0.9;
+    			}
+    		})
+    		.attr("cx", function(d){
+    			return xScale(d.year);
     					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "4");
+    		})
+    		.attr("cy", function(d){
+    			return yScale(d.pop);
+    		})
+    		.attr("r", "4");
     				
 
-      //path function, calls line function
-      svg.append("path")
+		//path function, calls line function
+      	svg.append("path")
       		.datum(dataSet.UN)
       		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke", "#DD1C77")
-      .attr("d", line);
+      		.attr("fill", "none")
+      		.attr("stroke-width", "1.5px")
+      		.attr("stroke", "#DD1C77")
+      		.attr("d", line);
       
 
-	//populationBureau
-	 svg.selectAll(".point")
-    				.data(dataSet.populationBureau)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("fill", "green")
-    				.attr("fill-opacity", function(d){
-    						if(d.inter == "yes"){
-    							return 0.3;
-    						}else{
-    							return 0.9;
-    						}
-    				})
-    				.attr("cx", function(d){
-    					return xScale(d.year);
+		//populationBureau
+		svg.selectAll(".point")
+    		.data(dataSet.populationBureau)
+    		.enter()
+    		.append("svg:circle")
+    		.attr("fill", "green")
+    		.attr("fill-opacity", function(d){
+    			if(d.inter == "yes"){
+    				return 0.3;
+    			}else{
+    				return 0.9;
+    			}
+    		})
+    		.attr("cx", function(d){
+    			return xScale(d.year);
     					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "4");
+    		})
+    		.attr("cy", function(d){
+    			return yScale(d.pop);
+    		})
+    		.attr("r", "4");
     				
-      //path function, calls line function
-      svg.append("path")
+      	//path function, calls line function
+      	svg.append("path")
       		.datum(dataSet.populationBureau)
       		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke", "green")
-      .attr("d", line);
+      		.attr("fill", "none")
+      		.attr("stroke-width", "1.5px")
+      		.attr("stroke", "green")
+      		.attr("d", line);
       
       
-      //maddison
-	 svg.selectAll(".point")
-    				.data(dataSet.maddison)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("fill", "purple")
-    				.attr("fill-opacity", function(d){
-    						if(d.inter == "yes"){
-    							return 0.3;
-    						}else{
-    							return 0.9;
-    						}
-    				})
-    				.attr("cx", function(d){
-    					return xScale(d.year);
-    					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "4");
+		//maddison
+		svg.selectAll(".point")
+    		.data(dataSet.maddison)
+    		.enter()
+    		.append("svg:circle")
+    		.attr("fill", "purple")
+    		.attr("fill-opacity", function(d){
+    			if(d.inter == "yes"){
+    				return 0.3;
+    			}else{
+    				return 0.9;
+    			}
+    		})
+    		.attr("cx", function(d){
+    			return xScale(d.year);
+    		})
+    		.attr("cy", function(d){
+    			return yScale(d.pop);
+    		})
+    		.attr("r", "4");
     				
-      //path function, calls line function
-      svg.append("path")
+      	//path function, calls line function
+      	svg.append("path")
       		.datum(dataSet.maddison)
       		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke", "purple")
-      .attr("d", line);
+      		.attr("fill", "none")
+      		.attr("stroke-width", "1.5px")
+      		.attr("stroke", "purple")
+      		.attr("d", line);
       
       
-      //hyde
-	 svg.selectAll(".point")
-    				.data(dataSet.hyde)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("fill", "orange")
-    				.attr("fill-opacity", function(d){
-    						if(d.inter == "yes"){
-    							return 0.3;
-    						}else{
-    							return 0.9;
-    						}
-    				})
-    				.attr("cx", function(d){
-    					return xScale(d.year);
-    					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "4");
+      	//hyde
+	 	svg.selectAll(".point")
+    		.data(dataSet.hyde)
+    		.enter()
+    		.append("svg:circle")
+    		.attr("fill", "orange")
+    		.attr("fill-opacity", function(d){
+    			if(d.inter == "yes"){
+    				return 0.3;
+    			}else{
+    				return 0.9;
+    			}
+    		})
+    		.attr("cx", function(d){
+    			return xScale(d.year);		
+    		})
+    		.attr("cy", function(d){
+    			return yScale(d.pop);
+    		})
+    		.attr("r", "4");
     				
-      //path function, calls line function
-      svg.append("path")
+      	//path function, calls line function
+      	svg.append("path")
       		.datum(dataSet.hyde)
       		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke", "orange")
-      .attr("d", line);
+      		.attr("fill", "none")
+      		.attr("stroke-width", "1.5px")
+      		.attr("stroke", "orange")
+      		.attr("d", line);
 
 	      //USCensus
           svg.selectAll(".point")
