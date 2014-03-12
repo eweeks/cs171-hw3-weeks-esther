@@ -23,6 +23,16 @@
 	};
 
 	dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
+	dataSetb= { 0:[], 1000:[], 1200:[], 1250:[], 1500:[], 1600:[], 1650:[], 1700:[],
+		 1710:[], 1720:[], 1730:[], 1740:[], 1750:[], 1760:[], 1770:[], 1780:[], 
+		 1790:[], 1800:[], 1810:[], 1820:[], 1830:[], 1840:[], 1850:[], 1860:[],
+		  1870:[], 1880:[], 1890:[], 1900:[], 1910:[], 1913:[], 1920:[], 1930:[],
+		   1940:[], 1950:[], 1955:[], 1960:[], 1962:[], 1965:[], 1966:[], 1970:[],
+		    1973:[], 1975:[], 1980:[], 1985:[], 1990:[], 1995:[], 1998:[], 1999:[],
+		     2000:[], 2001:[], 2002:[], 2005:[], 2006:[], 2007:[], 2008:[], 2009:[],
+		      2010:[], 2015:[], 2020:[], 2025:[], 2030:[], 2035:[], 2040:[], 2045:[], 2050:[] };
+	var array = {years:[]};	      
+		      
 	var years = [];
 	var mean =[];
 
@@ -50,7 +60,24 @@
 		//Takes Data from csv, puts into array
 		data.forEach(function(d, i){
 		
+			//console.log(d);
+			//dataSetb.push({"year": d.Year, "pop": "", "inter": "yes", "name": "UN", });
 			//arrays of years
+			//array.years.map(function(e){
+				//console.log(e);
+				//if(e == d.Year){
+					array.years.push({"year":d.Year,
+						 "UN": d.UnitedNationsDepartmentofEconomicandSocialAffairs,
+						 "USCensus": d.UnitedStatesCensusBureau,
+						 "populationBureau": d.PopulationReferenceBureau,
+						 "hyde": d.HYDE,
+						 "maddison": d.Maddison});
+				//}
+			//})
+			
+			//console.log(array);
+			
+			
 			if(!inArray(d.Year, years)){
 				years.push(d.Year);
 			}
@@ -164,8 +191,15 @@
 		dataSet.UN.forEach(function(d, i){
 			if(d.inter == "yes"){
 				d.pop= iScale(unDom, unRang, d.year);
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.UN= iScale(unDom, unRang, d.year);
+					}
+				})
 			}
 		});
+		
+		console.log(array);
 		
 		//USCensus
 		var usDom=[];
@@ -181,6 +215,11 @@
 		dataSet.USCensus.forEach(function(d, i){
 			if(d.inter == "yes"){
 				d.pop= iScale(usDom, usRang, d.year);
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.USCensus= iScale(unDom, unRang, d.year);
+					}
+				})
 			}
 		});
 		
@@ -198,6 +237,11 @@
 		dataSet.hyde.forEach(function(d, i){
 			if(d.inter == "yes"){
 				d.pop= iScale(hyDom, hyRang, d.year);
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.hyde= iScale(unDom, unRang, d.year);
+					}
+				})
 			}
 		});
 		
@@ -214,6 +258,11 @@
 		dataSet.maddison.forEach(function(d, i){
 			if(d.inter == "yes"){
 				d.pop= iScale(maDom, maRang, d.year);
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.maddison= iScale(unDom, unRang, d.year);
+					}
+				})
 			}
 		});
 		
@@ -231,6 +280,11 @@
 		dataSet.populationBureau.forEach(function(d, i){
 			if(d.inter == "yes"){
 				d.pop= iScale(pbDom, pbRang, d.year);
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.populationBureau= iScale(unDom, unRang, d.year);
+					}
+				})
 			}
 		});
 
@@ -435,50 +489,75 @@
 
 			
 	var means ={year:[], pop:[]};
-	var y = years.map(function(d, i){
+	var y = array.years.map(function(d, i){
 			var t =[];
 			dataSet.UN.map(function(e){
-				if(e.year == d){
+				if(e.year == d.year){
 					t.push(e.pop);
 				}
 			})
 			dataSet.USCensus.map(function(a){
-				if(a.year == d){
+				if(a.year == d.year){
 					t.push(a.pop);
 				}
 			})
 			dataSet.hyde.map(function(l){
-				if(l.year == d){
+				if(l.year == d.year){
 					t.push(l.pop);
 				}
 			})
 			dataSet.maddison.map(function(r){
-				if(r.year == d){
+				if(r.year == d.year){
 					t.push(r.pop);
 				}
 			})
 			dataSet.populationBureau.map(function(c){
-				if(c.year == d){
+				if(c.year == d.year){
 					t.push(c.pop);
 				}
 			})
 			
 			means.pop.push(d3.mean(t));
 			means.year.push(d);
+			d.mean=d3.mean(t);
 			//console.log(t);
-			console.log(means);
-			
-			
+			//console.log(means);
 		
 		});
+		
+		/*means.year.map(function(d, i){
+			array.years.map(function(e){
+				if(e.year == d.year){
+					e.mean=d.pop;
+				}
+			})
+		});*/
 
-		console.log(dataSet);
+		console.log(array);
+		
+				
+		//draw lines
+		var line = d3.svg.line()
+				.interpolate("linear") 
+				.x(function(d,i) { return xScale(years[i]); })//not sure this is right
+				.y(function(d) { return yScale(d); });//not sure this is right
+					
+		//path function, calls line function
+		svg.append("path")
+			.datum(means.pop)
+			.attr("class", "axis")
+			.attr("fill", "none")
+			.attr("stroke-width", "4px")
+			.attr("stroke", "red")
+			.attr("d", line);
+		
 		
 		//Mean
 		svg.selectAll(".point")
 			.data(means.pop)
 			.enter()
 			.append("svg:circle")
+			.attr("r", "6")
 			.attr("fill", "red")
 			/*.attr("fill-opacity", function(d){
 				if(d.inter == "yes"){
@@ -493,21 +572,31 @@
 			.attr("cy", function(d){
 				return yScale(d);
 			})
-			.attr("r", "6");
 			
-			//draw lines
-		var line = d3.svg.line()
-				.interpolate("linear") 
-				.x(function(d,i) { return xScale(years[i]); })//not sure this is right
-				.y(function(d) { return yScale(d); });//not sure this is right
-					
-		//path function, calls line function
-		svg.append("path")
-			.datum(means.pop)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "4px")
-			.attr("stroke", "red")
-			.attr("d", line);
+			.on("mouseover", function(d, i) {
+				//Get this circles position for tooltip
+				var xPosition = parseFloat(xScale(years[i])+50) ;
+				var yPosition = parseFloat( yScale(d)+70) ;
+
+				//Update the tooltip position and value
+				d3.select("#tooltip")
+					.style("left", xPosition + "px")
+					.style("top", yPosition + "px")
+					.select("#year")
+					.text(years[i]);
+
+				d3.select("#pop")
+					.text(d);
+
+
+				//Show the tooltip
+				d3.select("#tooltip").classed("hidden", false);
+			})
+			.on("mouseout", function(d){
+				//Hide the tooltip
+				d3.select("#tooltip").classed("hidden", true);
+			});
+			
+			//console.log(years);
 	
 	};

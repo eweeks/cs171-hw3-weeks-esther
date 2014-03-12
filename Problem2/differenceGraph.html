@@ -16,12 +16,34 @@
             fill-opacity:0.5;
             clip-path: url(#clip);
         }
+		
+		#tooltip {
+			position: absolute;
+			width: 400px;
+			height: 100px;
+			padding: 5px;
+			background-color: white;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+			-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+			pointer-events: none;
+  		}
 
+  		#tooltip.hidden {
+			display: none;
+ 		}
 
     </style>
 
 </head>
 <body>
+	<div id="tooltip" class="hidden">
+		<p>Year: <span id="year"></span></p>
+		<p>Population: <span id="pop">100</span></p>
+	</div>
     <div id="vis"></div>
 
 
