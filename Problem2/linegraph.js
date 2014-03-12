@@ -392,37 +392,34 @@
       		.attr("stroke", "orange")
       		.attr("d", line);
 
-	      //USCensus
-          svg.selectAll(".point")
-    				.data(dataSet.USCensus)
-    				.enter()
-    				.append("svg:circle")
-    				.attr("fill", "blue")
-    				.attr("fill-opacity", function(d){
-    						if(d.inter == "yes"){
-    							return 0.3;
-    						}else{
-    							return 0.9;
-    						}
-    				})
-    				.attr("cx", function(d){
-    					return xScale(d.year);
-    					
-    				})
-    				.attr("cy", function(d){
-    					return yScale(d.pop);
-    				})
-    				.attr("r", "4");
+		//USCensus
+        svg.selectAll(".point")
+    		.data(dataSet.USCensus)
+    		.enter()
+    		.append("svg:circle")
+    		.attr("fill", "blue")
+    		.attr("fill-opacity", function(d){
+    			if(d.inter == "yes"){
+    				return 0.3;
+    			}else{
+    				return 0.9;
+    			}
+    		})
+    		.attr("cx", function(d){
+    			return xScale(d.year);	
+    		})
+    		.attr("cy", function(d){
+    			return yScale(d.pop);
+    		})
+    		.attr("r", "4");
     				
-
-      //path function, calls line function
-      svg.append("path")
+      	//path function, calls line function
+      	svg.append("path")
       		.datum(dataSet.USCensus)
       		.attr("class", "axis")
-      .attr("fill", "none")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke", "blue")
-      .attr("d", line);
-
+      		.attr("fill", "none")
+      		.attr("stroke-width", "1.5px")
+      		.attr("stroke", "blue")
+      		.attr("d", line);
 
     };
