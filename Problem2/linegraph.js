@@ -10,9 +10,9 @@
         left: 50
     };
 
-    width = 1500 - margin.left - margin.right;
+    width = 2000 - margin.left - margin.right;
 
-    height = 1000 - margin.bottom - margin.top;
+    height = 2500 - margin.bottom - margin.top;
 
     bbVis = {
         x: 0 + 100,
@@ -274,7 +274,8 @@
 
 	      xAxis = d3.svg.axis()
 	        	.scale(xScale)
-	        	.orient("bottom");
+	        	.orient("bottom")
+	        	.ticks(20);
 
 			//var y=d3.scale.linear().range([ ]);
 	        yAxis = d3.svg.axis()
@@ -322,19 +323,13 @@
     				.data(dataSet.UN)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", function(d){
-    					if(d.inter == "yes"){
-    						return d3.rgb("brown").brighter(4);
-    					}else{
-    						return "brown";
-    					}
-    				})
-    				.attr("fill", function(d){
-    					if(d.inter == "yes"){
-    						return d3.rgb("brown").brighter(4);
-    					}else{
-    						return "brown";
-    					}
+    				.attr("fill", "#DD1C77")
+    				.attr("fill-opacity", function(d){
+    						if(d.inter == "yes"){
+    							return 0.3;
+    						}else{
+    							return 0.9;
+    						}
     				})
     				.attr("cx", function(d){
     					return xScale(d.year);
@@ -343,7 +338,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "3");
+    				.attr("r", "4");
     				
     	//console.log(un);
 
@@ -353,7 +348,7 @@
       		.attr("class", "axis")
       .attr("fill", "none")
       .attr("stroke-width", "1.5px")
-      .attr("stroke", "brown")
+      .attr("stroke", "#DD1C77")
       .attr("d", line);
       
 
@@ -362,19 +357,13 @@
     				.data(dataSet.populationBureau)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", function(d){
-    					if(d.inter == "yes"){
-    						return "green";
-    					}else{
-    						return "green";
-    					}
-    				})
-    				.attr("fill", function(d){
-    					if(d.inter == "yes"){
-    						return "green";
-    					}else{
-    						return "green";
-    					}
+    				.attr("fill", "green")
+    				.attr("fill-opacity", function(d){
+    						if(d.inter == "yes"){
+    							return 0.3;
+    						}else{
+    							return 0.9;
+    						}
     				})
     				.attr("cx", function(d){
     					return xScale(d.year);
@@ -383,7 +372,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "2");
+    				.attr("r", "4");
     				
     	//console.log(un);
 
@@ -392,7 +381,7 @@
       		.datum(dataSet.populationBureau)
       		.attr("class", "axis")
       .attr("fill", "none")
-      .attr("stroke-width", "1px")
+      .attr("stroke-width", "1.5px")
       .attr("stroke", "green")
       .attr("d", line);
       
@@ -402,8 +391,14 @@
     				.data(dataSet.maddison)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "purple")
     				.attr("fill", "purple")
+    				.attr("fill-opacity", function(d){
+    						if(d.inter == "yes"){
+    							return 0.3;
+    						}else{
+    							return 0.9;
+    						}
+    				})
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -411,7 +406,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "2");
+    				.attr("r", "4");
     				
     	//console.log(un);
 
@@ -420,7 +415,7 @@
       		.datum(dataSet.maddison)
       		.attr("class", "axis")
       .attr("fill", "none")
-      .attr("stroke-width", "1px")
+      .attr("stroke-width", "1.5px")
       .attr("stroke", "purple")
       .attr("d", line);
       
@@ -430,8 +425,14 @@
     				.data(dataSet.hyde)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "orange")
     				.attr("fill", "orange")
+    				.attr("fill-opacity", function(d){
+    						if(d.inter == "yes"){
+    							return 0.3;
+    						}else{
+    							return 0.9;
+    						}
+    				})
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -439,7 +440,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "2");
+    				.attr("r", "4");
     				
     	//console.log(un);
 
@@ -448,7 +449,7 @@
       		.datum(dataSet.hyde)
       		.attr("class", "axis")
       .attr("fill", "none")
-      .attr("stroke-width", "1px")
+      .attr("stroke-width", "1.5px")
       .attr("stroke", "orange")
       .attr("d", line);
 
@@ -457,8 +458,14 @@
     				.data(dataSet.USCensus)
     				.enter()
     				.append("svg:circle")
-    				.attr("stroke", "blue")
     				.attr("fill", "blue")
+    				.attr("fill-opacity", function(d){
+    						if(d.inter == "yes"){
+    							return 0.3;
+    						}else{
+    							return 0.9;
+    						}
+    				})
     				.attr("cx", function(d){
     					return xScale(d.year);
     					
@@ -466,7 +473,7 @@
     				.attr("cy", function(d){
     					return yScale(d.pop);
     				})
-    				.attr("r", "2");
+    				.attr("r", "4");
     				
     	//console.log(un);
 
@@ -475,7 +482,7 @@
       		.datum(dataSet.USCensus)
       		.attr("class", "axis")
       .attr("fill", "none")
-      .attr("stroke-width", "1px")
+      .attr("stroke-width", "1.5px")
       .attr("stroke", "blue")
       .attr("d", line);
 
