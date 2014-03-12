@@ -1,6 +1,7 @@
 /**
  * Created by hen on 2/20/14.
  */
+ 
     var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
 
     margin = {
@@ -22,12 +23,7 @@
     };
 
     dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
-   /* var names =["USCensus", "populationBureau", "UN", "hyde", "maddison"];
-    var USCensus=[];
-    var populationBureau=[];
-    var UN= [];
-    var hyde =[];
-    var maddison=[];*/
+
     var fill = d3.scale.category10();
     
 
@@ -40,17 +36,9 @@
 
 
     d3.csv("timeline.csv", function(data) {
-
-        // convert your csv data and add it to dataSet
-        console.log(data);
-        //console.log(data[1].Year);
-        //var s = [];
-        //s.push(data[0]);
-        //var sources = d3.keys(data[0]) ;
-        	
-        //console.log(sources);
         
         //Must be a better way of doing this than just coding it all in... 
+        //Takes Data from csv, puts into array
         data.forEach(function(d, i){
      
         		//UN
@@ -65,7 +53,6 @@
         		
         		//US Census
         		if(d.UnitedStatesCensusBureau !== "" ){
-        			//USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau) });
         			dataSet.USCensus.push({"year": d.Year, "pop": parseInt(d.UnitedStatesCensusBureau),
         				"inter": "no", "name": "USCensus", });
         		};
@@ -116,10 +103,6 @@
 	
     createVis = function() {
     
-    //outside of data loop.. may be calling createVis too soon...
-		var range =[];
-		var domain =[];
-		
 		//Runs through datasets, finds last entered value, removes empty end data
 		
 		//UN
@@ -148,13 +131,10 @@
 			dataSet.populationBureau.pop();
 		}
 		
+		
 		//interpolate here
 		
-		//create scale
-    	//var inter = d3.scale.linear()
-    	//			.domain(domain)
-    	//			.range(range);
-    				
+    	//Scale for interpolation of data			
     	function iScale(domain, range, year){
     		var inter = d3.scale.linear()
     				.domain(domain)
@@ -247,29 +227,20 @@
     		}
     	});
 
-    	
-    	console.log(dataSet)
-    
-    	
-    	
         var xAxis, xScale, yAxis,  yScale;
 
-		//Need to set upper domain in more appropriate manner
-          xScale = d3.scale.linear().domain([0,2050]).range([bbVis.x, bbVis.w]);  // define the right domain generically
+		//Need to set upper domain in more appropriate manner?
+          xScale = d3.scale.linear().domain([0,2050]).range([bbVis.x, bbVis.w]); 
 
 		  // example that translates to the bottom left of our vis space:
 		  var visFrame = svg.append("g").attr({
 		      "transform": "translate(" + bbVis.x + "," + (bbVis.y + bbVis.h) + ")",
-		  	  //....
 			  
 		  });
 		  
 		 visFrame.append("rect");
-		  //....
-		//visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
-
 		  
-		 //find way to select the pop. max 
+		 //find way to select the pop. max ?
         yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
 
 	      xAxis = d3.svg.axis()
@@ -277,20 +248,18 @@
 	        	.orient("bottom")
 	        	.ticks(20);
 
-			//var y=d3.scale.linear().range([ ]);
 	        yAxis = d3.svg.axis()
 	        	.scale(yScale)
 	        	.orient("left")
 	        	.ticks(8);
       
-			// add y axis to svg !
+			// add y axis to svg
 			svg.append("g")
 			.attr("class", "axis line")
 			.attr("transform", "translate(" + bbVis.x +  ",0)") //not sure if last value should be zero but looks ok..
     		.call(yAxis);
     		
     		//add x axis
-    		
     		svg.append("g")
 			.attr("class", "axis line")
 			.attr("transform", "translate(0 ,"+bbVis.h+")")
@@ -301,21 +270,7 @@
     	.interpolate("linear") 
     	.x(function(d) { return xScale(d.year); })//not sure this is right
     	.y(function(d) { return yScale(d.pop); });//not sure this is right
-    	
-
-
-	//dots;
-	
-	
-	//repeat code just to test..
-	//console.log(USCensus);
-
-    //draw circles
-    //var dots = 
-   // names.forEach(function(j, e){
-    //console.log(names[e]);
-  //  visFrame.selectAll("g").data(dataSet).enter().append("g").attr("class", "graph");
-    
+    	  
     
     //not ideal, but draws all the data...
     //UN
@@ -340,7 +295,6 @@
     				})
     				.attr("r", "4");
     				
-    	//console.log(un);
 
       //path function, calls line function
       svg.append("path")
@@ -374,8 +328,6 @@
     				})
     				.attr("r", "4");
     				
-    	//console.log(un);
-
       //path function, calls line function
       svg.append("path")
       		.datum(dataSet.populationBureau)
@@ -408,8 +360,6 @@
     				})
     				.attr("r", "4");
     				
-    	//console.log(un);
-
       //path function, calls line function
       svg.append("path")
       		.datum(dataSet.maddison)
@@ -442,8 +392,6 @@
     				})
     				.attr("r", "4");
     				
-    	//console.log(un);
-
       //path function, calls line function
       svg.append("path")
       		.datum(dataSet.hyde)
@@ -475,7 +423,6 @@
     				})
     				.attr("r", "4");
     				
-    	//console.log(un);
 
       //path function, calls line function
       svg.append("path")
@@ -486,7 +433,5 @@
       .attr("stroke", "blue")
       .attr("d", line);
 
-
-	//});
 
     };
