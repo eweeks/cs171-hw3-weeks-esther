@@ -11,9 +11,9 @@
 		left: 50
 	};
 
-	width = 2000 - margin.left - margin.right;
+	width = 1500 - margin.left - margin.right;
 
-	height = 2500 - margin.bottom - margin.top;
+	height = 2000 - margin.bottom - margin.top;
 
 	bbVis = {
 		x: 0 + 100,
@@ -55,7 +55,7 @@
 				years.push(d.Year);
 			}
 
-				//UN
+			//UN
 			if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
 				dataSet.UN.push({"year": d.Year, "pop": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
 					"inter": "no", "name": "UN", });
@@ -432,48 +432,82 @@
 			.attr("stroke", "blue")
 			.attr("d", line);
 			
-			//console.log(dataSet);
-		for(i=0; i<=dataSet.length; i++ ){
-			dataSet[i].map(function(d, i){
-			console.log("here");
-		});
-		}
+
 			
+	var means ={year:[], pop:[]};
 	var y = years.map(function(d, i){
-			
-			return d3.mean(dataSet, function(a, i){
-					//var index =  a.year.indexOf(d);
-					//return (d<0 ? NaN : //a.map(function(e){
-								//a.map(function(e){
-									//return e.pop;})
-					//				a[index]
-					//				);
-						//}) 
-					//}
-			
-				if(a[i].year == d){
-					var index = a[i].pop;
-					return (d<0 ? NaN :[index]);
+			var t =[];
+			dataSet.UN.map(function(e){
+				if(e.year == d){
+					t.push(e.pop);
 				}
-			});
-			//return d3.mean(years);
-		
-			//console.log(f);
- 			//dataSet.map(function(e){ 
- 			 //	console.log(e);
- 			 //});
- 				//console.log(e);
- 				//return e.year; }).indexOf(d); 
-			/* if the current is out of range for a given estimate, d will return -1, 
-			so return NaN which d3.mean ignores by default. */
- 				//return (d<0 ? NaN : a.map(function(e){
- 				
- 				//return e.pop})[index])
-			//})
+			})
+			dataSet.USCensus.map(function(a){
+				if(a.year == d){
+					t.push(a.pop);
+				}
+			})
+			dataSet.hyde.map(function(l){
+				if(l.year == d){
+					t.push(l.pop);
+				}
+			})
+			dataSet.maddison.map(function(r){
+				if(r.year == d){
+					t.push(r.pop);
+				}
+			})
+			dataSet.populationBureau.map(function(c){
+				if(c.year == d){
+					t.push(c.pop);
+				}
+			})
+			
+			means.pop.push(d3.mean(t));
+			means.year.push(d);
+			//console.log(t);
+			console.log(means);
+			
+			
 		
 		});
-		//console.log(years);
-		console.log(y);
+
 		console.log(dataSet);
+		
+		//Mean
+		svg.selectAll(".point")
+			.data(means.pop)
+			.enter()
+			.append("svg:circle")
+			.attr("fill", "red")
+			/*.attr("fill-opacity", function(d){
+				if(d.inter == "yes"){
+					return 0.3;
+				}else{
+					return 0.9;
+				}
+			})*/
+			.attr("cx", function(d, i){
+				return xScale(years[i]);	
+			})
+			.attr("cy", function(d){
+				return yScale(d);
+			})
+			.attr("r", "6");
+			
+			//draw lines
+		var line = d3.svg.line()
+				.interpolate("linear") 
+				.x(function(d,i) { return xScale(years[i]); })//not sure this is right
+				.y(function(d) { return yScale(d); });//not sure this is right
+					
+		//path function, calls line function
+		svg.append("path")
+			.datum(means.pop)
+			.attr("class", "axis")
+			.attr("fill", "none")
+			.attr("stroke-width", "4px")
+			.attr("stroke", "red")
+			.attr("d", line);
 	
 	};
