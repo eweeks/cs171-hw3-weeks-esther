@@ -13,7 +13,7 @@
 
 	width = 1500 - margin.left - margin.right;
 
-	height = 2000 - margin.bottom - margin.top;
+	height = 500 - margin.bottom - margin.top;
 
 	bbVis = {
 		x: 0 + 100,
@@ -539,12 +539,12 @@
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
-				.x(function(d,i) { return xScale(years[i]); })//not sure this is right
-				.y(function(d) { return yScale(d); });//not sure this is right
+				.x(function(d,i) { return xScale(d.year); })//not sure this is right
+				.y(function(d) { return yScale(d.mean); });//not sure this is right
 					
 		//path function, calls line function
 		svg.append("path")
-			.datum(means.pop)
+			.datum(array.years)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "4px")
@@ -554,41 +554,70 @@
 		
 		//Mean
 		svg.selectAll(".point")
-			.data(means.pop)
+			.data(array.years)
 			.enter()
 			.append("svg:circle")
 			.attr("r", "6")
 			.attr("fill", "red")
-			/*.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})*/
-			.attr("cx", function(d, i){
-				return xScale(years[i]);	
+			.attr("cx", function(d){
+				return xScale(d.year);	
 			})
-			.attr("cy", function(d){
-				return yScale(d);
+			.attr("cy", function(d, i){
+				return yScale(d.mean);
 			})
 			
 			.on("mouseover", function(d, i) {
 				//Get this circles position for tooltip
-				var xPosition = parseFloat(xScale(years[i])+50) ;
-				var yPosition = parseFloat( yScale(d)+70) ;
+				var xPosition = parseFloat(xScale(d.year)) ;
+				var yPosition = parseFloat( yScale(d.mean)+70) ;
 
 				//Update the tooltip position and value
 				d3.select("#tooltip")
 					.style("left", xPosition + "px")
 					.style("top", yPosition + "px")
 					.select("#year")
-					.text(years[i]);
+					.text(d.year);
 
 				d3.select("#pop")
-					.text(d);
+					.text(parseInt(d.mean));
+				d3.select("#UN")
+					.text(parseInt(d.UN));
+					
+				console.log("is");
+				//console.log(d);
+				var list = {year:[]};
+				console.log(d);
+				
+				list.year.push({"year": d.year, "UN": d.UN, "USCensus": d.USCensus, 
+					"populationBureau": d.populationBureau, "hyde": d.hyde, "maddison": d.maddison,
+					"mean": d.mean, "year": d.year });
+			
+				console.log(list);
+				
+				var v = d3.select("#graph").append("svg")
+						.attr("width", 500)
+    					.attr("height", 300)
+    					.attr("class", "display");
+				
+			
+					v.selectAll(".view")
+					.data(list.year)
+					.enter()
+					.append("circle")
+					.attr("class", "view")
+					.attr("r", "10")
+					.attr("fill", "purple")
+					.attr("cx", function(d){
+						console.log(d.year);
+						return 5;
+					})
+					.attr("cy", function(d){
+						return 0;
+					});
+					
+					//.text(d.UN);
 
-
+				//console.log(d);
 				//Show the tooltip
 				d3.select("#tooltip").classed("hidden", false);
 			})
