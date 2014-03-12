@@ -533,7 +533,7 @@
 			})
 		});*/
 
-		console.log(array);
+		//console.log(array);
 		
 				
 		//draw lines
@@ -583,23 +583,73 @@
 				d3.select("#UN")
 					.text(parseInt(d.UN));
 					
-				console.log("is");
+				//console.log("is");
 				//console.log(d);
 				var list = {year:[]};
-				console.log(d);
+				//console.log(d);
 				
-				list.year.push({"year": d.year, "UN": d.UN, "USCensus": d.USCensus, 
-					"populationBureau": d.populationBureau, "hyde": d.hyde, "maddison": d.maddison,
-					"mean": d.mean, "year": d.year });
+				list.year.push({"year": parseInt(d.year), "UN": parseInt(d.UN), "USCensus": parseInt(d.USCensus), 
+					"populationBureau": parseInt(d.populationBureau), "hyde": parseInt(d.hyde), "maddison": parseInt(d.maddison),
+					"mean": parseInt(d.mean), });
 			
 				console.log(list);
+				d3.select("#tooltip").append("div").attr("id", "graph");
+				
+				var graphH= 400;
+				var graphW = 500
 				
 				var v = d3.select("#graph").append("svg")
-						.attr("width", 500)
-    					.attr("height", 300)
-    					.attr("class", "display");
+						.attr("width", graphW)
+    					.attr("height", graphH)
+    					.attr("class", "display")
+    					.attr("transform", "translate(20, 20)");
+    			//title		
+    			v.selectAll(".title")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "title")
+    				.text("Year "+ d.year)
+    				.attr("x", 10)
+    				.attr("y", 20)
+    				.attr("fill", "black");
+    				
+    				
+    			var min = d3.min(list.year, function(d){
+    				console.log("is");
+    				console.log(d);
+    				var c =[];
+    				//c.push(d.UN);
+    				//c.push(d.populationBureau);
+    				c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				return d3.min(c);
+    			});
+    			
+    			console.log("min is"+min);
+    			var max =  d3.max(list.year, function(d){
+    				var c =[];
+    				c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				return d3.max(c);
+    			});
+    			
+    			console.log("max is"+max);
+    			
+    			//yScale
+				var yScaleT = d3.scale.linear().domain([min, max]).range([100, 0]);
 				
-			
+				//yAxis
+				yAxisT = d3.svg.axis()
+				.scale(yScaleT)
+				.orient("left")
+				.ticks(3);
+				
+				//Draw axis
+				v.append("g")
+					.attr("class", "axis line")
+					.attr("transform", "translate(100, 25)") //not sure if last value should be zero but looks ok..
+					.call(yAxisT);
+				
+				//test circle
 					v.selectAll(".view")
 					.data(list.year)
 					.enter()
@@ -608,11 +658,11 @@
 					.attr("r", "10")
 					.attr("fill", "purple")
 					.attr("cx", function(d){
-						console.log(d.year);
-						return 5;
+						//console.log(d.year);
+						return 30;
 					})
 					.attr("cy", function(d){
-						return 0;
+						return 40;
 					});
 					
 					//.text(d.UN);
@@ -624,6 +674,7 @@
 			.on("mouseout", function(d){
 				//Hide the tooltip
 				d3.select("#tooltip").classed("hidden", true);
+				d3.select("#graph").remove();
 			});
 			
 			//console.log(years);
