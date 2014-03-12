@@ -67,11 +67,11 @@
 				//console.log(e);
 				//if(e == d.Year){
 					array.years.push({"year":d.Year,
-						 "UN": d.UnitedNationsDepartmentofEconomicandSocialAffairs,
-						 "USCensus": d.UnitedStatesCensusBureau,
-						 "populationBureau": d.PopulationReferenceBureau,
-						 "hyde": d.HYDE,
-						 "maddison": d.Maddison});
+						 "UN": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
+						 "USCensus": parseInt(d.UnitedStatesCensusBureau),
+						 "populationBureau": parseInt(d.PopulationReferenceBureau),
+						 "hyde": parseInt(d.HYDE),
+						 "maddison": parseInt(d.Maddison) });
 				//}
 			//})
 			
@@ -217,7 +217,7 @@
 				d.pop= iScale(usDom, usRang, d.year);
 				array.years.map(function(e){
 					if(e.year == d.year){
-						e.USCensus= iScale(unDom, unRang, d.year);
+						e.USCensus= iScale(usDom, usRang, d.year);
 					}
 				})
 			}
@@ -239,7 +239,7 @@
 				d.pop= iScale(hyDom, hyRang, d.year);
 				array.years.map(function(e){
 					if(e.year == d.year){
-						e.hyde= iScale(unDom, unRang, d.year);
+						e.hyde= iScale(hyDom, hyRang, d.year);
 					}
 				})
 			}
@@ -260,7 +260,7 @@
 				d.pop= iScale(maDom, maRang, d.year);
 				array.years.map(function(e){
 					if(e.year == d.year){
-						e.maddison= iScale(unDom, unRang, d.year);
+						e.maddison= iScale(maDom, maRang, d.year);
 					}
 				})
 			}
@@ -282,7 +282,7 @@
 				d.pop= iScale(pbDom, pbRang, d.year);
 				array.years.map(function(e){
 					if(e.year == d.year){
-						e.populationBureau= iScale(unDom, unRang, d.year);
+						e.populationBureau= iScale(pbDom, pbRang, d.year);
 					}
 				})
 			}
@@ -493,35 +493,35 @@
 			var t =[];
 			dataSet.UN.map(function(e){
 				if(e.year == d.year){
-					t.push(e.pop);
+					t.push(parseInt(e.pop));
 				}
 			})
 			dataSet.USCensus.map(function(a){
 				if(a.year == d.year){
-					t.push(a.pop);
+					t.push(parseInt(a.pop));
 				}
 			})
 			dataSet.hyde.map(function(l){
 				if(l.year == d.year){
-					t.push(l.pop);
+					t.push(parseInt(l.pop));
 				}
 			})
 			dataSet.maddison.map(function(r){
 				if(r.year == d.year){
-					t.push(r.pop);
+					t.push(parseInt(r.pop));
 				}
 			})
 			dataSet.populationBureau.map(function(c){
 				if(c.year == d.year){
-					t.push(c.pop);
+					t.push(parseInt(c.pop));
 				}
 			})
 			
 			means.pop.push(d3.mean(t));
 			means.year.push(d);
 			d.mean=d3.mean(t);
-			//console.log(t);
-			//console.log(means);
+			console.log(t);
+			console.log(means);
 		
 		});
 		
@@ -641,7 +641,7 @@
 				yAxisT = d3.svg.axis()
 				.scale(yScaleT)
 				.orient("left")
-				.ticks(3);
+				.ticks(5);
 				
 				//Draw axis
 				v.append("g")
@@ -651,7 +651,7 @@
 					
 				//xScale
 				var xScaleT = d3.scale.linear()
-                     .domain([0, 500])
+                    .domain([0, 500])
                     .range([5, (500-50)]);
 					
 					
@@ -707,6 +707,6 @@
 				d3.select("#graph").remove();
 			});
 			
-			//console.log(years);
+			console.log(dataSet);
 	
 	};

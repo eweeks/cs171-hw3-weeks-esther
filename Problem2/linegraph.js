@@ -420,5 +420,7 @@
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "blue")
 			.attr("d", line);
+			
+		console.log(dataSet);
 
 	};
