@@ -574,7 +574,7 @@
 				//Update the tooltip position and value
 				d3.select("#tooltip")
 					.style("left", xPosition + "px")
-					.style("top", yPosition + "px")
+					.style("top", yPosition-250 + "px")
 					.select("#year")
 					.text(d.year);
 
@@ -635,7 +635,7 @@
     			console.log("max is"+max);
     			
     			//yScale
-				var yScaleT = d3.scale.linear().domain([min, max]).range([100, 0]);
+				var yScaleT = d3.scale.linear().domain([min, max]).range([150, 10]);
 				
 				//yAxis
 				yAxisT = d3.svg.axis()
@@ -648,6 +648,36 @@
 					.attr("class", "axis line")
 					.attr("transform", "translate(100, 25)") //not sure if last value should be zero but looks ok..
 					.call(yAxisT);
+					
+				//xScale
+				var xScaleT = d3.scale.linear()
+                     .domain([0, 500])
+                    .range([5, (500-50)]);
+					
+					
+				//test average line
+				//draw lines
+				var linesK = d3.svg.line()
+				.interpolate("linear") 
+				.x(function(d) { return xScaleT(d.mean); })
+				.y(function(d) { return yScaleT(d.mean); });//not sure this is right
+					
+			//path function, calls line function
+			v.append("svg:line")
+				.data(list.year)
+				.attr("class", "aver")
+				.attr("x1", 100)
+    			.attr("y1", function(d){
+    				return yScaleT(d.mean);
+    			})
+   				.attr("x2", 450)
+    			.attr("y2", function(d){
+    				return yScaleT(d.mean);
+    			})
+				.attr("fill", "none")
+				.attr("stroke-width", "4px")
+				.attr("stroke", "red")
+				//.attr("d", linesK(d));
 				
 				//test circle
 					v.selectAll(".view")
