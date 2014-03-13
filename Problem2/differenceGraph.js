@@ -649,11 +649,24 @@
 					.attr("transform", "translate(100, 25)") //not sure if last value should be zero but looks ok..
 					.call(yAxisT);
 					
-				//xScale
+				/*//xScale
 				var xScaleT = d3.scale.linear()
                     .domain([0, 500])
-                    .range([5, (500-50)]);
-					
+                    .range([5, (500-50)]);*/
+                //xScale 
+                var xScaleT = d3.scale.ordinal()
+    				.rangeRoundBands([50, graphW-100], .1);
+    				
+				//xAxis
+				var xAxisT = d3.svg.axis()
+    				.scale(xScaleT)
+    				.orient("bottom");
+    				
+    			//Add X axis
+    			v.append("g")
+					.attr("class", "axis line")
+					.attr("transform", "translate(50, 175)") //not sure if last value should be zero but looks ok..
+					.call(xAxisT);
 					
 				//test average line
 				//draw lines
@@ -704,7 +717,7 @@
 			.on("mouseout", function(d){
 				//Hide the tooltip
 				d3.select("#tooltip").classed("hidden", true);
-				d3.select("#graph").remove();
+				//d3.select("#graph").remove();
 			});
 			
 			console.log(dataSet);
