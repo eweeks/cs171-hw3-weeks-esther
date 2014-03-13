@@ -13,7 +13,7 @@
 
 	width = 1500 - margin.left - margin.right;
 
-	height = 500 - margin.bottom - margin.top;
+	height = 900 - margin.bottom - margin.top;
 
 	bbVis = {
 		x: 0 + 100,
@@ -354,14 +354,14 @@
 			.attr("r", "4");
 			
 
-		//path function, calls line function
+		/*//path function, calls line function
 			svg.append("path")
 			.datum(dataSet.UN)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "#DD1C77")
-			.attr("d", line);
+			.attr("d", line);*/
 
 
 		//populationBureau
@@ -386,14 +386,14 @@
 			})
 			.attr("r", "4");
 					
-		//path function, calls line function
+		/*//path function, calls line function
 		svg.append("path")
 			.datum(dataSet.populationBureau)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "green")
-			.attr("d", line);
+			.attr("d", line);*/
 
 		//maddison
 		svg.selectAll(".point")
@@ -416,14 +416,14 @@
 			})
 			.attr("r", "4");
 					
-		//path function, calls line function
+		/*//path function, calls line function
 		svg.append("path")
 			.datum(dataSet.maddison)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "purple")
-			.attr("d", line);
+			.attr("d", line);*/
 
 
 		//hyde
@@ -447,14 +447,14 @@
 			})
 			.attr("r", "4");
 					
-		//path function, calls line function
+		/*//path function, calls line function
 		svg.append("path")
 			.datum(dataSet.hyde)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "orange")
-			.attr("d", line);
+			.attr("d", line);*/
 
 		//USCensus
 		svg.selectAll(".point")
@@ -477,14 +477,14 @@
 			})
 			.attr("r", "4");
 					
-		//path function, calls line function
+		/*//path function, calls line function
 		svg.append("path")
 			.datum(dataSet.USCensus)
 			.attr("class", "axis")
 			.attr("fill", "none")
 			.attr("stroke-width", "1.5px")
 			.attr("stroke", "blue")
-			.attr("d", line);
+			.attr("d", line);*/
 			
 
 			
@@ -547,7 +547,7 @@
 			.datum(array.years)
 			.attr("class", "axis")
 			.attr("fill", "none")
-			.attr("stroke-width", "4px")
+			.attr("stroke-width", "2px")
 			.attr("stroke", "red")
 			.attr("d", line);
 		
@@ -557,7 +557,7 @@
 			.data(array.years)
 			.enter()
 			.append("svg:circle")
-			.attr("r", "6")
+			.attr("r", "4")
 			.attr("fill", "red")
 			.attr("cx", function(d){
 				return xScale(d.year);	
@@ -570,10 +570,19 @@
 				//Get this circles position for tooltip
 				var xPosition = parseFloat(xScale(d.year)) ;
 				var yPosition = parseFloat(yScale(d.mean)+70) ;
-
+				
+				var sizing = d.year;
+				console.log(d.year);
 				//Update the tooltip position and value
 				d3.select("#tooltip")
-					.style("left", xPosition + "px")
+					.style("left", function(d){
+						if(parseInt(sizing) >= 1600){
+							console.log("hit");
+							return (xPosition-400 + "px");
+						}else{
+							return (xPosition + "px");
+						}
+					})
 					.style("top", yPosition-70 + "px")
 					.select("#year")
 					.text(d.year);
