@@ -599,7 +599,7 @@
 				d3.select("#tooltip").append("div").attr("id", "graph");
 				
 				var graphH= 400;
-				var graphW = 500
+				var graphW = 500;
 				
 				var v = d3.select("#graph").append("svg")
 						.attr("width", graphW)
@@ -660,7 +660,7 @@
                     .range([5, (500-50)]);*/
                 //xScale 
                 var xScaleT = d3.scale.ordinal()
-    				.rangeRoundBands([50, graphW-100], .1);
+    				.rangeRoundBands([50, 460], .1);
     				
 				//xAxis
 				var xAxisT = d3.svg.axis()
@@ -688,7 +688,7 @@
     			.attr("y1", function(d){
     				return yScaleT(d.mean);
     			})
-   				.attr("x2", 450)
+   				.attr("x2", 480)
     			.attr("y2", function(d){
     				return yScaleT(d.mean);
     			})
@@ -698,6 +698,8 @@
 				//.attr("d", linesK(d));
 				
 				//Draws bars
+				var barPadding = 1; 
+				
 				v.selectAll(".bar")
       				.data(list.values)
     				.enter().append("rect")
@@ -725,8 +727,7 @@
       					}*/
       					return 20;
       				})
-      				.attr("width", //xScaleT.rangeBand());
-      					7);
+      				.attr("width", (graphW-200) / list.values.length - barPadding);
 				
 				
 				//test circle
@@ -754,7 +755,7 @@
 			.on("mouseout", function(d){
 				//Hide the tooltip
 				d3.select("#tooltip").classed("hidden", true);
-				//d3.select("#graph").remove();
+				d3.select("#graph").remove();
 			});
 			
 			//console.log(dataSet);
