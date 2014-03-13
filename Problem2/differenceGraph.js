@@ -11,9 +11,9 @@
 		left: 50
 	};
 
-	width = 1500 - margin.left - margin.right;
+	width = 1800 - margin.left - margin.right;
 
-	height = 900 - margin.bottom - margin.top;
+	height = 1400 - margin.bottom - margin.top;
 
 	bbVis = {
 		x: 0 + 100,
@@ -68,10 +68,15 @@
 				//if(e == d.Year){
 					array.years.push({"year":d.Year,
 						 "UN": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
+						 "UNI": "no",
 						 "USCensus": parseInt(d.UnitedStatesCensusBureau),
+						 "USCI": "no",
 						 "populationBureau": parseInt(d.PopulationReferenceBureau),
+						 "popBI": "no",
 						 "hyde": parseInt(d.HYDE),
-						 "maddison": parseInt(d.Maddison) });
+						 "hydeI": "no",
+						 "maddison": parseInt(d.Maddison), 
+						 "madI": "no",});
 				//}
 			//})
 			
@@ -194,9 +199,16 @@
 				array.years.map(function(e){
 					if(e.year == d.year){
 						e.UN= iScale(unDom, unRang, d.year);
+						e.UNI="yes";
 					}
 				})
-			}
+			}/*else{
+				array.years.map(function(e){
+					if(e.year == d.year){
+						e.UNI="no";
+					}
+				})
+			}*/
 		});
 		
 		console.log(array);
@@ -218,6 +230,7 @@
 				array.years.map(function(e){
 					if(e.year == d.year){
 						e.USCensus= iScale(usDom, usRang, d.year);
+						e.USCI="yes";
 					}
 				})
 			}
@@ -240,6 +253,7 @@
 				array.years.map(function(e){
 					if(e.year == d.year){
 						e.hyde= iScale(hyDom, hyRang, d.year);
+						e.hydeI="yes";
 					}
 				})
 			}
@@ -261,6 +275,7 @@
 				array.years.map(function(e){
 					if(e.year == d.year){
 						e.maddison= iScale(maDom, maRang, d.year);
+						e.madI="yes";
 					}
 				})
 			}
@@ -283,6 +298,7 @@
 				array.years.map(function(e){
 					if(e.year == d.year){
 						e.populationBureau= iScale(pbDom, pbRang, d.year);
+						e.popBI="yes";
 					}
 				})
 			}
@@ -592,22 +608,22 @@
 				d3.select("#UN")
 					.text(parseInt(d.UN));
 					
-				//console.log("is");
+				console.log("is");
 				//console.log(d);
 				var list = {year:[], values:[]};
-				//console.log(d);
+				console.log(d);
 				
 				list.year.push({"year": parseInt(d.year),"mean": parseInt(d.mean), });
-				list.values.push({"name": "UN", "pop": parseInt(d.UN)});
-				list.values.push({"name": "US Census", "pop": parseInt(d.USCensus)});
-				list.values.push({"name": "Pop. Bureau", "pop": parseInt(d.populationBureau)});
-				list.values.push({"name": "Hyde", "pop": parseInt(d.hyde)});
-				list.values.push({"name":"Maddison", "pop": parseInt(d.maddison)});
+				list.values.push({"name": "UN", "pop": parseInt(d.UN), "inter": d.UNI});
+				list.values.push({"name": "US Census", "pop": parseInt(d.USCensus), "inter": d.USCI});
+				list.values.push({"name": "Pop. Bureau", "pop": parseInt(d.populationBureau), "inter":d.popBI});
+				list.values.push({"name": "Hyde", "pop": parseInt(d.hyde), "inter":d.hydeI});
+				list.values.push({"name":"Maddison", "pop": parseInt(d.maddison), "inter": d.madI});
 			
-				console.log(d);
+				console.log(list);
 				d3.select("#tooltip").append("div").attr("id", "graph");
 				
-				var graphH= 400;
+				var graphH= 300;
 				var graphW = 500;
 				
 				var v = d3.select("#graph").append("svg")
@@ -647,9 +663,12 @@
     			});
     			
     			//console.log("max is"+max);
+    			//Don't want the min bar to be zero, so way to add to lower end of
+    			//scale so that the lowest value will still be drawn..
+    			var t= (min-((max-min)/5));
     			
     			//yScale
-				var yScaleT = d3.scale.linear().domain([min, max]).range([150, 10]);
+				var yScaleT = d3.scale.linear().domain([t, max]).range([graphH-30, 50]);
 				
 				//yAxis
 				yAxisT = d3.svg.axis()
@@ -660,7 +679,7 @@
 				//Draw axis
 				v.append("g")
 					.attr("class", "axis line")
-					.attr("transform", "translate(100, 25)") //not sure if last value should be zero but looks ok..
+					.attr("transform", "translate(100, 0)") //not sure if last value should be zero but looks ok..
 					.call(yAxisT);
 					
 				/*//xScale
@@ -669,7 +688,7 @@
                     .range([5, (500-50)]);*/
                 //xScale 
                 var xScaleT = d3.scale.ordinal()
-    				.rangeRoundBands([50, 460], .1);
+    				.rangeRoundBands([50, graphW-60], .1);
     				
 				//xAxis
 				var xAxisT = d3.svg.axis()
@@ -679,7 +698,7 @@
     			//Add X axis
     			v.append("g")
 					.attr("class", "axis line")
-					.attr("transform", "translate(50, 175)") 
+					.attr("transform", "translate(50,"+(graphH-30)+")") 
 					.call(xAxisT);
 					
 				//test average line
@@ -689,21 +708,7 @@
 				.x(function(d) { return xScaleT(d.mean); })
 				.y(function(d) { return yScaleT(d.mean); });
 					
-			//path function, calls line function
-			v.append("svg:line")
-				.data(list.year)
-				.attr("class", "aver")
-				.attr("x1", 100)
-    			.attr("y1", function(d){
-    				return yScaleT(d.mean);
-    			})
-   				.attr("x2", 480)
-    			.attr("y2", function(d){
-    				return yScaleT(d.mean);
-    			})
-				.attr("fill", "none")
-				.attr("stroke-width", "4px")
-				.attr("stroke", "red");
+			
 				//.attr("d", linesK(d));
 				
 				//Draws bars
@@ -722,7 +727,7 @@
       				 })
       				.attr("y", function(d) { 
       					if(Number.isNaN(d.pop)){
-      						return  175;
+      						return graphH-30;
       					}else{
       						//return  graphH - d.pop; ;
       						//return 100;
@@ -736,7 +741,7 @@
       					}else{
       						//return 175;
       						//console.log(graphH);
-      						return 175 - yScaleT(d.pop); 
+      						return (graphH-30)- yScaleT(d.pop); 
       					}
       					//return 20;
       				})
@@ -744,6 +749,29 @@
       				.attr("fill", function(d){
       					return fill(d.name);
       				})
+      				.attr("fill-opacity", function(d){
+						if(d.inter == "yes"){
+							return 0.25;
+						}else{
+							return 1;
+						}
+					});
+					
+			//path function, calls line function
+			v.append("svg:line")
+				.data(list.year)
+				.attr("class", "aver")
+				.attr("x1", 100)
+    			.attr("y1", function(d){
+    				return yScaleT(d.mean);
+    			})
+   				.attr("x2", 480)
+    			.attr("y2", function(d){
+    				return yScaleT(d.mean);
+    			})
+				.attr("fill", "none")
+				.attr("stroke-width", "4px")
+				.attr("stroke", "red");
 				
 				//X-labels	
     			v.selectAll(".labels")
@@ -757,7 +785,9 @@
     				.attr("x", function(d, i){
     					return 100+(i *((graphW-100)/ list.values.length));
     				})
-    				.attr("y",  190)
+    				.attr("y",  function(d){
+    					return (graphH-20);
+    				})
     				.attr("fill", "black")
     				.attr("font-size", "11px");
     			
@@ -768,7 +798,7 @@
     				.append("text")
     				.attr("class", "estimates")
     				.text( function(d, i){
-    					return  d.pop-aver;
+    					return  "Pop "+ parseInt(d.pop-aver);
     				})
     				.attr("x", function(d, i){
     					return 100+(i *((graphW-100)/ list.values.length));
@@ -779,22 +809,21 @@
     				.attr("fill", "black")
     				.attr("font-size", "11px");
     				
-				
-				//test circle
-					v.selectAll(".view")
-					.data(list.year)
+    			//title		
+    			v.selectAll(".percents")
+    				.data(list.year)
 					.enter()
-					.append("circle")
-					.attr("class", "view")
-					.attr("r", "10")
-					.attr("fill", "purple")
-					.attr("cx", function(d){
-						//console.log(d.year);
-						return 30;
-					})
-					.attr("cy", function(d){
-						return 40;
-					});
+    				.append("text")
+    				.attr("class", "percents")
+    				.text(function(d, i){
+    					return  "Percent Above Average"+ min;
+    				})
+    				.attr("x", 10)
+    				.attr("y", 35)
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
+    				
+    				
 					
 					//.text(d.UN);
 
@@ -808,6 +837,6 @@
 				d3.select("#graph").remove();
 			});
 			
-			//console.log(dataSet);
+			console.log(array.years);
 	
 	};
