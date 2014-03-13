@@ -5,8 +5,8 @@
 	var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
 
 	margin = {
-		top: 50,
-		right: 50,
+		top: 200,
+		right: 400,
 		bottom: 50,
 		left: 50
 	};
@@ -569,12 +569,12 @@
 			.on("mouseover", function(d, i) {
 				//Get this circles position for tooltip
 				var xPosition = parseFloat(xScale(d.year)) ;
-				var yPosition = parseFloat( yScale(d.mean)+70) ;
+				var yPosition = parseFloat(yScale(d.mean)+70) ;
 
 				//Update the tooltip position and value
 				d3.select("#tooltip")
 					.style("left", xPosition + "px")
-					.style("top", yPosition-250 + "px")
+					.style("top", yPosition-70 + "px")
 					.select("#year")
 					.text(d.year);
 
@@ -590,12 +590,12 @@
 				
 				list.year.push({"year": parseInt(d.year),"mean": parseInt(d.mean), });
 				list.values.push({"name": "UN", "pop": parseInt(d.UN)});
-				list.values.push({"name": "USCensus", "pop": parseInt(d.USCensus)});
-				list.values.push({"name": "populationBureau", "pop": parseInt(d.populationBureau)});
-				list.values.push({"name": "hyde", "pop": parseInt(d.hyde)});
-				list.values.push({"name":"maddison", "pop": parseInt(d.maddison)});
+				list.values.push({"name": "US Census", "pop": parseInt(d.USCensus)});
+				list.values.push({"name": "Pop. Bureau", "pop": parseInt(d.populationBureau)});
+				list.values.push({"name": "Hyde", "pop": parseInt(d.hyde)});
+				list.values.push({"name":"Maddison", "pop": parseInt(d.maddison)});
 			
-				console.log(list);
+				console.log(d);
 				d3.select("#tooltip").append("div").attr("id", "graph");
 				
 				var graphH= 400;
@@ -670,12 +670,12 @@
     			//Add X axis
     			v.append("g")
 					.attr("class", "axis line")
-					.attr("transform", "translate(50, 175)") //not sure if last value should be zero but looks ok..
+					.attr("transform", "translate(50, 175)") 
 					.call(xAxisT);
 					
 				//test average line
-				//draw line
-				var linesK = d3.svg.line()
+			//draw line
+			var linesK = d3.svg.line()
 				.interpolate("linear") 
 				.x(function(d) { return xScaleT(d.mean); })
 				.y(function(d) { return yScaleT(d.mean); });
@@ -712,23 +712,45 @@
       					}
       				 })
       				.attr("y", function(d) { 
-      					/*if(Number.isNaN(d.pop)){
-      						return yScaleT(0);
+      					if(Number.isNaN(d.pop)){
+      						return  175;
       					}else{
+      						//return  graphH - d.pop; ;
+      						//return 100;
       						return yScaleT(d.pop); 
-      					}*/
-      					return 155;
+      					}
+      					//return  h - d; ;
       				})
       				.attr("height", function(d) { 
-      					/*if(Number.isNaN(d.pop)){
-      						return graphH;
+      					if(Number.isNaN(d.pop)){
+      						return 0;
       					}else{
-      						return graphH - yScaleT(d.pop); 
-      					}*/
-      					return 20;
+      						//return 175;
+      						console.log(graphH);
+      						return 175 - yScaleT(d.pop); 
+      					}
+      					//return 20;
       				})
-      				.attr("width", (graphW-200) / list.values.length - barPadding);
+      				.attr("width", (graphW-200) / list.values.length - barPadding)
+      				.attr("fill", function(d){
+      					return fill(d.name);
+      				})
 				
+				//X-labels	
+    			v.selectAll(".labels")
+    				.data(list.values)
+					.enter()
+    				.append("text")
+    				.attr("class", "labels")
+    				.text(function(d, i){
+    					return  d.name;
+    				})
+    				.attr("x", function(d, i){
+    					return 100+(i *((graphW-100)/ list.values.length));
+    				})
+    				.attr("y",  190)
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
 				
 				//test circle
 					v.selectAll(".view")
