@@ -520,8 +520,8 @@
 			means.pop.push(d3.mean(t));
 			means.year.push(d);
 			d.mean=d3.mean(t);
-			console.log(t);
-			console.log(means);
+			//console.log(t);
+			//console.log(means);
 		
 		});
 		
@@ -585,12 +585,15 @@
 					
 				//console.log("is");
 				//console.log(d);
-				var list = {year:[]};
+				var list = {year:[], values:[]};
 				//console.log(d);
 				
-				list.year.push({"year": parseInt(d.year), "UN": parseInt(d.UN), "USCensus": parseInt(d.USCensus), 
-					"populationBureau": parseInt(d.populationBureau), "hyde": parseInt(d.hyde), "maddison": parseInt(d.maddison),
-					"mean": parseInt(d.mean), });
+				list.year.push({"year": parseInt(d.year),"mean": parseInt(d.mean), });
+				list.values.push({"name": "UN", "pop": parseInt(d.UN)});
+				list.values.push({"name": "USCensus", "pop": parseInt(d.USCensus)});
+				list.values.push({"name": "populationBureau", "pop": parseInt(d.populationBureau)});
+				list.values.push({"name": "hyde", "pop": parseInt(d.hyde)});
+				list.values.push({"name":"maddison", "pop": parseInt(d.maddison)});
 			
 				console.log(list);
 				d3.select("#tooltip").append("div").attr("id", "graph");
@@ -615,20 +618,22 @@
     				.attr("fill", "black");
     				
     				
-    			var min = d3.min(list.year, function(d){
+    			var min = d3.min(list.values, function(d){
     				console.log("is");
     				console.log(d);
     				var c =[];
     				//c.push(d.UN);
     				//c.push(d.populationBureau);
-    				c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				//c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				c.push(d.pop);
     				return d3.min(c);
     			});
     			
     			console.log("min is"+min);
-    			var max =  d3.max(list.year, function(d){
+    			var max =  d3.max(list.values, function(d){
     				var c =[];
-    				c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				//c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
+    				c.push(d.pop);
     				return d3.max(c);
     			});
     			
@@ -669,11 +674,11 @@
 					.call(xAxisT);
 					
 				//test average line
-				//draw lines
+				//draw line
 				var linesK = d3.svg.line()
 				.interpolate("linear") 
 				.x(function(d) { return xScaleT(d.mean); })
-				.y(function(d) { return yScaleT(d.mean); });//not sure this is right
+				.y(function(d) { return yScaleT(d.mean); });
 					
 			//path function, calls line function
 			v.append("svg:line")
@@ -689,8 +694,40 @@
     			})
 				.attr("fill", "none")
 				.attr("stroke-width", "4px")
-				.attr("stroke", "red")
+				.attr("stroke", "red");
 				//.attr("d", linesK(d));
+				
+				//Draws bars
+				v.selectAll(".bar")
+      				.data(list.values)
+    				.enter().append("rect")
+      				.attr("class", "bar")
+      				.attr("x", function(d, i) { 
+      					if(i==0){
+      						return 100+(i *((graphW-100)/ list.values.length));
+      					}else{
+      						return 100+(i *((graphW-100)/ list.values.length));
+      					}
+      				 })
+      				.attr("y", function(d) { 
+      					/*if(Number.isNaN(d.pop)){
+      						return yScaleT(0);
+      					}else{
+      						return yScaleT(d.pop); 
+      					}*/
+      					return 155;
+      				})
+      				.attr("height", function(d) { 
+      					/*if(Number.isNaN(d.pop)){
+      						return graphH;
+      					}else{
+      						return graphH - yScaleT(d.pop); 
+      					}*/
+      					return 20;
+      				})
+      				.attr("width", //xScaleT.rangeBand());
+      					7);
+				
 				
 				//test circle
 					v.selectAll(".view")
@@ -720,6 +757,6 @@
 				//d3.select("#graph").remove();
 			});
 			
-			console.log(dataSet);
+			//console.log(dataSet);
 	
 	};
