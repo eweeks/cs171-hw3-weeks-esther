@@ -619,8 +619,8 @@
     				
     				
     			var min = d3.min(list.values, function(d){
-    				console.log("is");
-    				console.log(d);
+    				//console.log("is");
+    				//console.log(d);
     				var c =[];
     				//c.push(d.UN);
     				//c.push(d.populationBureau);
@@ -637,7 +637,7 @@
     				return d3.max(c);
     			});
     			
-    			console.log("max is"+max);
+    			//console.log("max is"+max);
     			
     			//yScale
 				var yScaleT = d3.scale.linear().domain([min, max]).range([150, 10]);
@@ -726,7 +726,7 @@
       						return 0;
       					}else{
       						//return 175;
-      						console.log(graphH);
+      						//console.log(graphH);
       						return 175 - yScaleT(d.pop); 
       					}
       					//return 20;
@@ -751,6 +751,25 @@
     				.attr("y",  190)
     				.attr("fill", "black")
     				.attr("font-size", "11px");
+    			
+    			var aver = d.mean;
+    			v.selectAll(".estimates")
+    				.data(list.values)
+					.enter()
+    				.append("text")
+    				.attr("class", "estimates")
+    				.text( function(d, i){
+    					return  d.pop-aver;
+    				})
+    				.attr("x", function(d, i){
+    					return 100+(i *((graphW-100)/ list.values.length));
+    				})
+    				.attr("y",  function(d){
+    					return yScaleT(d.pop)-2;
+    				})
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
+    				
 				
 				//test circle
 					v.selectAll(".view")
