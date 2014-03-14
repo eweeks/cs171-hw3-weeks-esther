@@ -18,6 +18,13 @@ bbOverview = {
     h: 70
 };
 
+bbVis = {
+    x: 0,
+    y: 10,
+    w: width,
+    h: 70
+};
+
 var padding= 50;
 
 bbDetail = {
@@ -152,6 +159,27 @@ d3.csv("unHealth.csv", function(data) {
 			.attr("cy", function(d, i){
 				return yScale(d.count);
 			})
+			
+		
+		//Brush
+		function brushed(){
+		
+		};
+			
+		brush = d3.svg.brush().x(xScale).on("brush", brushed);
+		
+		overview
+			.append("g")
+			.attr("class", "brush")
+			.call(brush)
+  			.selectAll("rect")
+  			.attr({
+    			height: bbOverview.h-30,
+    			//width: bbOverview.w-60,
+				//transform: "translate(20,100)"
+			});
+			
+		d3.select(".background").attr("height", "60");
 
 	};
 	
@@ -233,8 +261,7 @@ d3.csv("unHealth.csv", function(data) {
 			})
 			.attr("cy", function(d, i){
 				return yScale(d.count);
-			})
-	
+			});
 	
 	}
 	
