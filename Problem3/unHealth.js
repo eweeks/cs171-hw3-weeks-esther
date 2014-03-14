@@ -123,13 +123,13 @@ d3.csv("unHealth.csv", function(data) {
 		
 		//draw yAxis
 		overview.append("g")
-    		.attr("class", "axis")
+    		.attr("class", "yAxis")
    		 	.attr("transform", "translate(" + padding + ",0)")
     		.call(yAxis);
     		
     	//draw xAxis
     	overview.append("g")
-				.attr("class", "axis")
+				.attr("class", "xAxis")
 				.attr("transform", "translate(0," + (bbOverview.h - 30) + ")")
 				.call(xAxis);
 				
