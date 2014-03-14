@@ -668,7 +668,7 @@
     			var t= (min-((max-min)/5));
     			
     			//yScale
-				var yScaleT = d3.scale.linear().domain([t, max]).range([graphH-30, 50]);
+				var yScaleT = d3.scale.linear().domain([t, max]).range([graphH-30, 70]);
 				
 				//yAxis
 				yAxisT = d3.svg.axis()
@@ -757,7 +757,7 @@
 						}
 					});
 					
-			//path function, calls line function
+			//Draws line 
 			v.append("svg:line")
 				.data(list.year)
 				.attr("class", "aver")
@@ -771,7 +771,9 @@
     			})
 				.attr("fill", "none")
 				.attr("stroke-width", "4px")
-				.attr("stroke", "red");
+				.attr("stroke", "#F4C066");
+				
+				//#9787A3-nice purple gray color, #E8C384-orange
 				
 				//X-labels	
     			v.selectAll(".labels")
@@ -798,7 +800,12 @@
     				.append("text")
     				.attr("class", "estimates")
     				.text( function(d, i){
-    					return  "Pop "+ parseInt(d.pop-aver);
+    					var diff = parseInt(d.pop-aver)
+    					if(diff >=0){
+    						return "+"+diff;
+    					}else{
+    						return  diff;
+    					}
     				})
     				.attr("x", function(d, i){
     					return 100+(i *((graphW-100)/ list.values.length));
@@ -809,16 +816,47 @@
     				.attr("fill", "black")
     				.attr("font-size", "11px");
     				
-    			//title		
-    			v.selectAll(".percents")
+    			//percents above
+    			v.selectAll(".above")
     				.data(list.year)
 					.enter()
     				.append("text")
-    				.attr("class", "percents")
+    				.attr("class", "above")
     				.text(function(d, i){
-    					return  "Percent Above Average"+ min;
+    					var a = ((max-d.mean)/d.mean)*100;
+    					return  "Percent Above Average: "+ a.toFixed(2);
     				})
     				.attr("x", 10)
+    				.attr("y", 35)
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
+    				
+    			//percent below	
+    			v.selectAll(".below")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "below")
+    				.text(function(d, i){
+    					var a = ((d.mean-min)/d.mean)*100;
+    					return  "Percent Below Average: "+ a.toFixed(2);
+    				})
+    				.attr("x", 180)
+    				.attr("y", 35)
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
+    				
+    			//percent diver. for graph
+    			v.selectAll(".diff")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "diff")
+    				.text(function(d, i){
+    					var a = ((max-min)/d.mean)*100;
+    					return  "Percent Difference: "+ a.toFixed(2);
+    				})
+    				.attr("x", 350)
     				.attr("y", 35)
     				.attr("fill", "black")
     				.attr("font-size", "11px");
