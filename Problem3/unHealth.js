@@ -52,9 +52,11 @@ var overview = svg
 					width: bbOverview.w,
     				height: bbOverview.h
 				})
-				.append("g").attr({
+				.append("g")
+				.attr({
 					transform: "translate(" + bbOverview.x + "," + bbOverview.y + ")"
-				});
+				})
+				.attr("class", "overview");
 
 var detail = svg
 				.append("svg")
@@ -62,9 +64,11 @@ var detail = svg
 					width: bbDetail.w,
     				height: bbDetail.h
 				})
-				.append("g").attr({
+				.append("g")
+				.attr({
 					transform: "translate(" + bbDetail.x + "," + bbDetail.y + ")"
-				});
+				})
+				.attr("class", "detail");
 
 
 d3.csv("unHealth.csv", function(data) {
