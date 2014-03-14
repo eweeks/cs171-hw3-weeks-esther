@@ -164,11 +164,13 @@ d3.csv("unHealth.csv", function(data) {
 		//xScale
 		xScale = d3.time.scale().domain([minDate, maxDate]).range([50, bbDetail.w-60]);
 		
+		
 		//yAxis
 		var yAxis = d3.svg.axis()
                   .scale(yScale)
                   .orient("left")
                   .ticks(6);
+
 		
 		//xAxis
 		var xAxis = d3.svg.axis()
@@ -187,6 +189,21 @@ d3.csv("unHealth.csv", function(data) {
 				.attr("class", "axis")
 				.attr("transform", "translate(0," + (bbDetail.h - 120) + ")")
 				.call(xAxis);
+
+		//for fill
+		var fill = d3.svg.area()
+    				.x(function(d) { return xScale(d.date); })
+    				.y0(bbDetail.h-120)
+    				.y1(function(d) { return yScale(d.count); });
+		
+		
+		//for fill
+		detail.append("path")
+        	.datum(dataSet)
+        	.attr("class", "detailArea")
+        	.attr("d", fill);
+        
+ 
 				
 		//draw lines
 		var line = d3.svg.line()
