@@ -37,17 +37,6 @@ bbDetail = {
 dataSet = [];
 
 var max;
-var yScale1;
-var xScale1;
-var yAxis1;
-var xAxis1;
-
-var yScale2;
-var xScale2;
-var yAxis2;
-var xAxis2;
-
-var fill;
 
 svg = d3.select("#visUN").append("svg").attr({
     	width: width + margin.left + margin.right,
@@ -109,57 +98,47 @@ d3.csv("unHealth.csv", function(data) {
 	
 	console.log(minDate);
 	console.log(maxDate);
-	
-		//Clipping Path
-		detail.append("defs").append("clipPath")
-    		.attr("id", "clip")
-  			.append("rect")
-   	 		.attr("width", bbDetail.w-100)
-    		.attr("height", bbDetail.h)
-    		.attr("x", 50);
-    		//.attr("y", );
-    		//.attr("transform", "translate(0," + (bbDetail.h - 120) + ")");
 
 	//Function for overview view
-	//function viewA(){
+	function viewA(){
 		console.log(dataSet);
 		
 		//yScale
-		yScale1 = d3.scale.linear().domain([0, max]).range([bbOverview.h-30, 0]);
+		yScale = d3.scale.linear().domain([0, max]).range([bbOverview.h-30, 0]);
 		
 		//xScale
-		xScale1 = d3.time.scale().domain([minDate, maxDate]).range([50, bbOverview.w-60]);
+		xScale = d3.time.scale().domain([minDate, maxDate]).range([50, bbOverview.w-60]);
 		
 		//yAxis
-		yAxis1 = d3.svg.axis()
-                  .scale(yScale1)
+		var yAxis = d3.svg.axis()
+                  .scale(yScale)
                   .orient("left")
                   .ticks(3);
 		
 		//xAxis
-		xAxis1 = d3.svg.axis()
-                  .scale(xScale1)
+		var xAxis = d3.svg.axis()
+                  .scale(xScale)
                   .orient("bottom");
 		
 		
 		//draw yAxis
 		overview.append("g")
-    		.attr("class", "yAxis axis")
+    		.attr("class", "yAxis")
    		 	.attr("transform", "translate(" + padding + ",0)")
-    		.call(yAxis1);
+    		.call(yAxis);
     		
     	//draw xAxis
     	overview.append("g")
-				.attr("class", "xAxis axis")
+				.attr("class", "xAxis")
 				.attr("transform", "translate(0," + (bbOverview.h - 30) + ")")
-				.call(xAxis1);
+				.call(xAxis);
 				
 				
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
-				.x(function(d) { return xScale1(d.date); })
-				.y(function(d) { return yScale1(d.count); });
+				.x(function(d) { return xScale(d.date); })
+				.y(function(d) { return yScale(d.count); });
 					
 		//path function, calls line function
 		overview.append("path")
@@ -179,30 +158,19 @@ d3.csv("unHealth.csv", function(data) {
 			.attr("r", "2")
 			//.attr("fill", "red")
 			.attr("cx", function(d){
-				return xScale1(d.date);	
+				return xScale(d.date);	
 			})
 			.attr("cy", function(d, i){
-				return yScale1(d.count);
+				return yScale(d.count);
 			})
-			
-			
 			
 		
 		//Brush
 		function brushed(){
-			xScale2.domain(brush.empty() ? xScale1.domain() : brush.extent());
-  			detail.select(".detailArea").attr("d", fill);
- 			detail.select(".xAxis").call(xAxis2);
- 			detail.select(".detailPath").attr("d", line);
- 			detail.selectAll(".detailPoint").attr("cx", function(d){
-				return xScale2(d.date);	
-			})
-			.attr("cy", function(d, i){
-				return yScale2(d.count);
-			});
+		
 		};
 			
-		brush = d3.svg.brush().x(xScale1).on("brush", brushed);
+		brush = d3.svg.brush().x(xScale).on("brush", brushed);
 		
 		overview
 			.append("g")
@@ -217,49 +185,48 @@ d3.csv("unHealth.csv", function(data) {
 			
 		d3.select(".background").attr("height", "60");
 
-	//};
+	};
 	
 	//Draw Detail Chart
-	//function viewB(){
-	
+	function viewB(){
 		
 		//yScale
-		yScale2 = d3.scale.linear().domain([0, max]).range([bbDetail.h-120, 0]);
+		yScale = d3.scale.linear().domain([0, max]).range([bbDetail.h-120, 0]);
 		
 		//xScale
-		xScale2 = d3.time.scale().domain([minDate, maxDate]).range([50, bbDetail.w-60]);
+		xScale = d3.time.scale().domain([minDate, maxDate]).range([50, bbDetail.w-60]);
 		
 		
 		//yAxis
-		var yAxis2 = d3.svg.axis()
-                  .scale(yScale2)
+		var yAxis = d3.svg.axis()
+                  .scale(yScale)
                   .orient("left")
                   .ticks(6);
 
 		
 		//xAxis
-		var xAxis2 = d3.svg.axis()
-                  .scale(xScale2)
+		var xAxis = d3.svg.axis()
+                  .scale(xScale)
                   .orient("bottom");
 		
 		
 		//draw yAxis
 		detail.append("g")
-    		.attr("class", "axis yAxis")
+    		.attr("class", "axis")
    		 	.attr("transform", "translate(" + padding + ",0)")
-    		.call(yAxis2);
+    		.call(yAxis);
     		
     	//draw xAxis
     	detail.append("g")
-				.attr("class", "axis xAxis")
+				.attr("class", "axis")
 				.attr("transform", "translate(0," + (bbDetail.h - 120) + ")")
-				.call(xAxis2);
+				.call(xAxis);
 
 		//for fill
 		var fill = d3.svg.area()
-    				.x(function(d) { return xScale2(d.date); })
+    				.x(function(d) { return xScale(d.date); })
     				.y0(bbDetail.h-120)
-    				.y1(function(d) { return yScale2(d.count); });
+    				.y1(function(d) { return yScale(d.count); });
 		
 		
 		//for fill
@@ -273,8 +240,8 @@ d3.csv("unHealth.csv", function(data) {
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
-				.x(function(d) { return xScale2(d.date); })
-				.y(function(d) { return yScale2(d.count); });
+				.x(function(d) { return xScale(d.date); })
+				.y(function(d) { return yScale(d.count); });
 					
 		//path function, calls line function
 		detail.append("path")
@@ -290,22 +257,20 @@ d3.csv("unHealth.csv", function(data) {
 			.data(dataSet)
 			.enter()
 			.append("svg:circle")
-			.attr("class", "point detailPoint")
+			.attr("class", "point")
 			.attr("r", "2")
 			//.attr("fill", "red")
 			.attr("cx", function(d){
-				return xScale2(d.date);	
+				return xScale(d.date);	
 			})
 			.attr("cy", function(d, i){
-				return yScale2(d.count);
+				return yScale(d.count);
 			});
 	
-		
+	}
 	
-	//}
-	
-	//viewA();
-	//viewB();
+	viewA();
+	viewB();
 	
 	
 });
