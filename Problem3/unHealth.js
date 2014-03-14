@@ -24,7 +24,7 @@ bbDetail = {
     x: 0,
     y: 100,
     w: width,
-    h: 300
+    h: 400
 };
 
 dataSet = [];
@@ -126,8 +126,8 @@ d3.csv("unHealth.csv", function(data) {
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
-				.x(function(d,i) { return xScale(d.date); })//not sure this is right
-				.y(function(d) { return yScale(d.count); });//not sure this is right
+				.x(function(d) { return xScale(d.date); })
+				.y(function(d) { return yScale(d.count); });
 					
 		//path function, calls line function
 		overview.append("path")
@@ -154,8 +154,45 @@ d3.csv("unHealth.csv", function(data) {
 			})
 
 	};
-
+	
+	//Draw Detail Chart
+	function viewB(){
+		
+		//yScale
+		yScale = d3.scale.linear().domain([0, max]).range([bbDetail.h-120, 0]);
+		
+		//xScale
+		xScale = d3.time.scale().domain([minDate, maxDate]).range([50, bbDetail.w-60]);
+		
+		//yAxis
+		var yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(6);
+		
+		//xAxis
+		var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("bottom");
+		
+		
+		//draw yAxis
+		detail.append("g")
+    		.attr("class", "axis")
+   		 	.attr("transform", "translate(" + padding + ",0)")
+    		.call(yAxis);
+    		
+    	//draw xAxis
+    	detail.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (bbDetail.h - 120) + ")")
+				.call(xAxis);
+	
+	
+	}
+	
 	viewA();
+	viewB();
 	
 	
 });
