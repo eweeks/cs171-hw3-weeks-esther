@@ -28,15 +28,44 @@ bbDetail = {
 dataSet = [];
 
 svg = d3.select("#visUN").append("svg").attr({
-    width: width + margin.left + margin.right,
-    height: height + margin.top + margin.bottom
-}).append("g").attr({
+    	width: width + margin.left + margin.right,
+    	height: height + margin.top + margin.bottom
+	})
+	.append("g").attr({
         transform: "translate(" + margin.left + "," + margin.top + ")"
     });
+    
+var overview = svg
+				.append("svg")
+				.attr({
+					width: bbOverview.w,
+    				height: bbOverview.h
+				})
+				.append("g").attr({
+					transform: "translate(" + bbOverview.x + "," + bbOverview.y + ")"
+				});
+
+var detail = svg
+				.append("svg")
+				.attr({
+					width: bbDetail.w,
+    				height: bbDetail.h
+				})
+				.append("g").attr({
+					transform: "translate(" + bbDetail.x + "," + bbDetail.y + ")"
+				});
 
 
 d3.csv("unHealth.csv", function(data) {
+	console.log(data);
+	var format =d3.time.format("%B-%Y");
 
+	
+	data.forEach(function(d, i){
+		dataSet.push({"date": format.parse(d.AnalysisDate),
+					"count": d.WomensHealth});
+	});
+	console.log(dataSet);
 });
 
 var convertToInt = function(s) {
