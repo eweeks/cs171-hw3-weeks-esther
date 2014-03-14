@@ -96,7 +96,7 @@ d3.csv("unHealth.csv", function(data) {
 		yScale = d3.scale.linear().domain([0, max]).range([bbOverview.h-30, 0]);
 		
 		//xScale
-		xScale = d3.time.scale().domain([minDate, maxDate]).range([15, bbOverview.w-60]);
+		xScale = d3.time.scale().domain([minDate, maxDate]).range([50, bbOverview.w-60]);
 		
 		//yAxis
 		var yAxis = d3.svg.axis()
@@ -119,8 +119,39 @@ d3.csv("unHealth.csv", function(data) {
     	//draw xAxis
     	overview.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(36," + (bbOverview.h - 30) + ")")
+				.attr("transform", "translate(0," + (bbOverview.h - 30) + ")")
 				.call(xAxis);
+				
+				
+		//draw lines
+		var line = d3.svg.line()
+				.interpolate("linear") 
+				.x(function(d,i) { return xScale(d.date); })//not sure this is right
+				.y(function(d) { return yScale(d.count); });//not sure this is right
+					
+		//path function, calls line function
+		overview.append("path")
+			.datum(dataSet)
+			.attr("class", "path")
+			.attr("fill", "none")
+			.attr("stroke-width", "1px")
+			//.attr("stroke", "red")
+			.attr("d", line);		
+				
+		//draw circles
+		overview.selectAll(".point")
+			.data(dataSet)
+			.enter()
+			.append("svg:circle")
+			.attr("class", "point")
+			.attr("r", "2")
+			//.attr("fill", "red")
+			.attr("cx", function(d){
+				return xScale(d.date);	
+			})
+			.attr("cy", function(d, i){
+				return yScale(d.count);
+			})
 
 	};
 
