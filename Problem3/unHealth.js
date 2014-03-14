@@ -7,7 +7,7 @@ var margin = {
     left: 50
 };
 
-var width = 1000 - margin.left - margin.right;
+var width = 1200 - margin.left - margin.right;
 
 var height = 800 - margin.bottom - margin.top;
 
@@ -15,7 +15,7 @@ bbOverview = {
     x: 0,
     y: 10,
     w: width,
-    h: 50
+    h: 70
 };
 
 var padding= 50;
