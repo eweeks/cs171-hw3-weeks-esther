@@ -132,9 +132,9 @@ d3.csv("unHealth.csv", function(data) {
 		//path function, calls line function
 		overview.append("path")
 			.datum(dataSet)
-			.attr("class", "path")
+			.attr("class", "path overviewPath")
 			.attr("fill", "none")
-			.attr("stroke-width", "1px")
+			//.attr("stroke-width", "1px")
 			//.attr("stroke", "red")
 			.attr("d", line);		
 				
@@ -187,6 +187,36 @@ d3.csv("unHealth.csv", function(data) {
 				.attr("class", "axis")
 				.attr("transform", "translate(0," + (bbDetail.h - 120) + ")")
 				.call(xAxis);
+				
+		//draw lines
+		var line = d3.svg.line()
+				.interpolate("linear") 
+				.x(function(d) { return xScale(d.date); })
+				.y(function(d) { return yScale(d.count); });
+					
+		//path function, calls line function
+		detail.append("path")
+			.datum(dataSet)
+			.attr("class", "path detailPath")
+			.attr("fill", "none")
+			//.attr("stroke-width", "1px")
+			//.attr("stroke", "red")
+			.attr("d", line);		
+				
+		//draw circles
+		detail.selectAll(".point")
+			.data(dataSet)
+			.enter()
+			.append("svg:circle")
+			.attr("class", "point")
+			.attr("r", "2")
+			//.attr("fill", "red")
+			.attr("cx", function(d){
+				return xScale(d.date);	
+			})
+			.attr("cy", function(d, i){
+				return yScale(d.count);
+			})
 	
 	
 	}
