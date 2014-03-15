@@ -28,21 +28,16 @@
             var body = content.find("tbody tr:gt(10)"); //find rows starting at year 0
             var arrayOfLines = [];
             var titles=[];
-			console.log($(body));
-			
+
 			//Get headers
             $.each(headers, function(index, value) {
             	//only need first 6 columns (0-5 indexing, filter this)
             	if(index <= 5){
                 	
                 	if($(value).find("a[title]").text()){
-                		console.log($(value).find("a[title]").text()); // print text
                 		titles.push($(value).find("a[title]").text().replace(/ /g,''));
                 	}else{
-                		//var r= $(value).contents(':not(p)').text()
-                		console.log($(value).find(":first").text()); // print text
                 		titles.push($(value).find(":first").text().replace(/ /g,''));
-                	//console.log(headers.find("a[title]").text());
                 	}
                 }
             });
@@ -55,41 +50,29 @@
             //get body
 			$.each(body, function(index, value) {
 				rows=[];
-				//$(value)=$(value).slice(0,5)
-				for(i=0; i<=5; i++){		
-                	//console.log($(value).find("td").eq(i).text());
-                	
+				for(i=0; i<=5; i++){		                	
                 	if($(value).find("td").eq(i).text() != ""){
-                		//console.log(convertToInt($(value).text()) );
                 		rows.push(convertToInt($(value).find("td").eq(i).text() ));
                 	}else{
-                		//console.log($(value).text());
                 		rows.push($(value).find("td").eq(i).text());
                 	}
             	}
             	count=0;
             	for(j=1; j<=5; j++){
-            		//count=0;
-            		console.log(rows[j]);
             		if(rows[j] == "" || rows[j] == null ){
-            		 count=count+1;
-            			console.log(count);
+            		 	count=count+1;
             		}
             	};
             	
             	if(count==5){
-            			console.log("empty");
             		}else{
             			marker=marker+1;
             			arrayOfLines[marker]="";
             			rows.forEach(function(d){arrayOfLines[marker]+=d+",";});
             		}
-            	
-                
             });
 			
 			
-			console.log(arrayOfLines);
 			saveToFile(arrayOfLines,"timeline.csv")
         },
         error: function() {
@@ -109,9 +92,9 @@
        var blob, blobText;
        blobText = arrayOfLines.map(function(d) {
          if (d.endsWith("\n")) {
-           return d;
+        	return d;
          } else {
-           return d + "\n";
+        	return d + "\n";
          }
        });
        blob = new Blob(blobText, {
@@ -123,8 +106,6 @@
      String.prototype.endsWith = function(suffix) {
        return this.indexOf(suffix, this.length - suffix.length) !== -1;
      };
-	
-
 
 
 </script>
