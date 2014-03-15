@@ -18,8 +18,16 @@ Data Types:
 	Type: Int or float.
 	
 	Data is in html tags, not in a file, like JSON or CSV, with which we have been working.
-	To get just the data it will require different types of data processing. And it may
-	be easier to pull down just the data we need from the site. 
+	To get just the data it will require different types of data processing. Data will have
+	to be pulled from the html tags, to get the data we need. In addition, it may be easier 
+	to pull down just the data we need from the site, instead of all of it. 
 	
 
 ###2.
+	Selection for second row in the Wikipedia table: 
+	$("tbody tr:nth-child(2)")
+	$("tbody tr").eq(1)
+	
+	All table rows that are not the header row:
+	$("tbody tr").not("tbody tr:nth-child(1)")
+	$("tbody tr").not("first")
