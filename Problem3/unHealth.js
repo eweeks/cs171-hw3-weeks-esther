@@ -37,6 +37,7 @@ bbDetail = {
 dataSet = [];
 
 var max;
+var min;
 var yScale1;
 var xScale1;
 var yAxis1;
@@ -88,7 +89,7 @@ d3.csv("unHealth.csv", function(data) {
 
 	
 	data.forEach(function(d, i){
-		console.log(d);
+		//console.log(d);
 		dataSet.push({"date": format.parse(d.AnalysisDate),
 					"count": convertToInt(d.WomensHealth)});
 	});
@@ -200,15 +201,17 @@ d3.csv("unHealth.csv", function(data) {
 			.attr("cy", function(d, i){
 				return yScale2(d.count);
 			});
+			console.log("called");
 		};
 			
 		brush = d3.svg.brush().x(xScale1).on("brush", brushed);
 		
-		overview
+		var draw = overview
 			.append("g")
 			.attr("class", "brush")
-			.call(brush)
-  			.selectAll("rect")
+			.call(brush);
+  			
+  			draw.selectAll("rect")
   			.attr({
     			height: bbOverview.h-30,
     			//width: bbOverview.w-60,
@@ -216,6 +219,13 @@ d3.csv("unHealth.csv", function(data) {
 			});
 			
 		d3.select(".background").attr("height", "60");
+		
+
+		  //overview.select(".brush").call(brush.extent([a, b]));
+		  //draw.call(brush.extent([a, b]));
+		  
+		//var t =d3.svg.brush().x(xScale1).extent([0.4, 0.8]);
+		//brush.extent([0.4, 0.8]);
 
 	//};
 	
@@ -306,6 +316,14 @@ d3.csv("unHealth.csv", function(data) {
 	
 	//viewA();
 	//viewB();
+	
+		//testing out calling brush
+		var a = dataSet[28].date;
+		var b =dataSet[31].date;
+		
+	
+	overview.select(".brush").call(brush.extent([a, b]));
+	brushed();
 	
 	
 });
