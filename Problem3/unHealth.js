@@ -448,7 +448,6 @@ d3.csv("unHealth.csv", function(data) {
                 .append("xhtml:body")
                 .html('<div style="width: 150px;">Regulations passed ensuring coverage for employees of religious organizations/institutions which self insure. </div>')
 			
-			
     	});
     	
     events.append("text")
