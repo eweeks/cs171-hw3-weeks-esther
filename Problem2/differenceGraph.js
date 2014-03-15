@@ -613,41 +613,10 @@
     				.attr("font-size", "11px");
     				
     			
-    			var l;
-    			var u;
+    			var l=((d.mean-min)/d.mean)*100;
+    			var u=((max-d.mean)/d.mean)*100;
     				
-    			//percents above
-    			v.selectAll(".above")
-    				.data(list.year)
-					.enter()
-    				.append("text")
-    				.attr("class", "above")
-    				.text(function(d, i){
-    					u = ((max-d.mean)/d.mean)*100;
-    					return  "Percent Above Average: "+ u.toFixed(2);
-    				})
-    				.attr("x", 10)
-    				.attr("y", 35)
-    				.attr("fill", "black")
-    				.attr("font-size", "11px");
-    				
-    			
-    			//percent below	
-    			v.selectAll(".below")
-    				.data(list.year)
-					.enter()
-    				.append("text")
-    				.attr("class", "below")
-    				.text(function(d, i){
-    					l = ((d.mean-min)/d.mean)*100;
-    					return  "Percent Below Average: "+ l.toFixed(2);
-    				})
-    				.attr("x", 180)
-    				.attr("y", 35)
-    				.attr("fill", "black")
-    				.attr("font-size", "11px");
-    				
-    			//percent diver. for graph
+    			/*//percent diver. for graph
     			v.selectAll(".diff")
     				.data(list.year)
 					.enter()
@@ -660,9 +629,32 @@
     				.attr("x", 350)
     				.attr("y", 35)
     				.attr("fill", "black")
+    				.attr("font-size", "11px");*/
+    				
+    			//lower title for population
+    			v.selectAll("titleP")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "titleP")
+    				.text("Population Estimates Compared to Average")
+    				.attr("x", 200)
+    				.attr("y", 295)
+    				.attr("fill", "black")
     				.attr("font-size", "11px");
     				
-    			console.log(l);	
+    			//lower title for percent
+    			v.selectAll("titleP")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "titleP")
+    				.text("Percent to Average")
+    				.attr("x", 500)
+    				.attr("y", 295)
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
+    				
     				
     			//second graph
     			var lower = 0-l.toFixed(2);
@@ -708,6 +700,23 @@
 						return op;
 					})
 					
+				//Text for below average	
+				v.selectAll(".tb")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "tb")
+    				.text(function(d, i){
+    					return  lower;
+    				})
+    				.attr("x", 520)
+    				.attr("y", function(d){
+    					return yScaleP(lower)-5;
+    				})
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");	
+					
+					
 				//Draws line for percent above average
 				v.append("svg:line")
 					.data(list.year)
@@ -730,6 +739,22 @@
 						var op =$( ".max" ).attr( "fill-opacity" )
 						return op;
 					});
+					
+				//Text for above average	
+				v.selectAll(".tl")
+    				.data(list.year)
+					.enter()
+    				.append("text")
+    				.attr("class", "tl")
+    				.text(function(d, i){
+    					return  "+"+upper;
+    				})
+    				.attr("x", 520)
+    				.attr("y", function(d){
+    					return yScaleP(upper)-5;
+    				})
+    				.attr("fill", "black")
+    				.attr("font-size", "11px");
     			
     			//Draws line for average
     			v.append("svg:line")
