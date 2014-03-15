@@ -58,6 +58,14 @@ svg = d3.select("#visUN").append("svg").attr({
         transform: "translate(" + margin.left + "," + margin.top + ")"
     });
     
+d3.select("svg")	
+	.append("text")
+    .attr("class", "title")
+    .text("Social Media and Women's Health - Data from UN Global Pulse")
+    .attr("x", 50)
+    .attr("y", 20)
+    .attr("fill", "black");
+    
 var overview = svg
 				.append("svg")
 				.attr({
@@ -200,8 +208,9 @@ d3.csv("unHealth.csv", function(data) {
 			})
 			.attr("cy", function(d, i){
 				return yScale2(d.count);
-			});
-			console.log("called");
+			})
+			events.select(".tips").remove();
+
 		};
 			
 		brush = d3.svg.brush().x(xScale1).on("brush", brushed);
@@ -314,20 +323,96 @@ d3.csv("unHealth.csv", function(data) {
 	
 	//}
 	
-	//viewA();
-	//viewB();
 	
 		//Event 1 Jan-Feb. 27, 30
 		//Event 2 March 29, 31
 		//Event 3 August 2012 34, 36
 	
 		//testing out calling brush
-		var a = dataSet[34].date;
-		var b =dataSet[36].date;
+		//var a = dataSet[34].date;
+		//var b =dataSet[36].date;
 		
 	
-	overview.select(".brush").call(brush.extent([a, b]));
-	brushed();
+	//overview.select(".brush").call(brush.extent([a, b]));
+	//brushed();
+	
+	var events = d3.select("svg")
+				.append("g")
+				.attr("class", "events");
+	//title		
+    events
+    	.append("text")
+    	.attr("class", "title")
+    	.text("Notable Events")
+    	.attr("x", 50)
+    	.attr("y", bbDetail.h+100)
+    	.attr("fill", "black");
+    	
+    events.append("text")
+    	.attr("class", "events")
+    	.text("January 2012 - February 2012 ")
+    	.attr("x", 80)
+    	.attr("y", bbDetail.h+130)
+    	.on("click", function(d){
+    		var s = dataSet[27].date;
+    		var f = dataSet[30].date;
+    		overview.select(".brush").call(brush.extent([s, f]));
+			brushed();
+			
+			var box = events.append("g").attr("class", "box");
+			
+			
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 480)
+				.attr("y", bbDetail.h-250)
+				.attr("height", 180)
+				.attr("width", 180);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("January 2012")
+    			.attr("x", 520)
+    			.attr("y", bbDetail.h-220)
+
+    			
+    		box.append('foreignObject')
+                    .attr('x', 490)
+                    .attr('y', bbDetail.h-200)
+                    .attr("class", "tips")
+                    .attr('width', 200)
+                    .attr('height', 200)
+                    .append("xhtml:body")
+                    .html('<div style="width: 150px;">Obama administration announces religiously affiliated employers cannot deny full birth control coverage to women they employ.</div>')
+			
+    	});
+    	//.attr("fill", "black");
+    
+    events.append("text")
+    	.attr("class", "events")
+    	.text("March 2012 ")
+    	.attr("x", 80)
+    	.attr("y", bbDetail.h+150)
+    	.on("click", function(d){
+    		var s = dataSet[29].date;
+    		var f = dataSet[31].date;
+    		overview.select(".brush").call(brush.extent([s, f]));
+			brushed();
+    	});
+    	//.attr("fill", "black");
+    	
+    events.append("text")
+    	.attr("class", "events")
+    	.text("August 2012 ")
+    	.attr("x", 80)
+    	.attr("y", bbDetail.h+170)
+    	.on("click", function(d){
+    		var s = dataSet[34].date;
+    		var f = dataSet[36].date;
+    		overview.select(".brush").call(brush.extent([s, f]));
+			brushed();
+    	});
+    	//.attr("fill", "black");
 	
 	
 });
