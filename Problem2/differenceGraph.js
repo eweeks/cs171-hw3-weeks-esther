@@ -5,15 +5,15 @@
 	var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
 
 	margin = {
-		top: 200,
+		top: 70,
 		right: 400,
 		bottom: 50,
 		left: 50
 	};
 
-	width = 1800 - margin.left - margin.right;
+	width = 1900 - margin.left - margin.right;
 
-	height = 1400 - margin.bottom - margin.top;
+	height = 1200 - margin.bottom - margin.top;
 
 	bbVis = {
 		x: 0 + 100,
@@ -22,20 +22,10 @@
 		h: height-100,
 	};
 
-	dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
-	dataSetb= { 0:[], 1000:[], 1200:[], 1250:[], 1500:[], 1600:[], 1650:[], 1700:[],
-		 1710:[], 1720:[], 1730:[], 1740:[], 1750:[], 1760:[], 1770:[], 1780:[], 
-		 1790:[], 1800:[], 1810:[], 1820:[], 1830:[], 1840:[], 1850:[], 1860:[],
-		  1870:[], 1880:[], 1890:[], 1900:[], 1910:[], 1913:[], 1920:[], 1930:[],
-		   1940:[], 1950:[], 1955:[], 1960:[], 1962:[], 1965:[], 1966:[], 1970:[],
-		    1973:[], 1975:[], 1980:[], 1985:[], 1990:[], 1995:[], 1998:[], 1999:[],
-		     2000:[], 2001:[], 2002:[], 2005:[], 2006:[], 2007:[], 2008:[], 2009:[],
-		      2010:[], 2015:[], 2020:[], 2025:[], 2030:[], 2035:[], 2040:[], 2045:[], 2050:[] };
-	var array = {years:[]};	      
-		      
-	var years = [];
+	var dataSet = {USCensus:[], populationBureau:[], UN:[], hyde:[], maddison:[] };
+	
+	var array = {years:[]};
 	var mean =[];
-
 	var fill = d3.scale.category10();
 
 
@@ -55,18 +45,10 @@
 		};
 
 	d3.csv("timeline.csv", function(data) {
-
-		//Must be a better way of doing this than just coding it all in... 
+ 
 		//Takes Data from csv, puts into array
 		data.forEach(function(d, i){
-		
-			//console.log(d);
-			//dataSetb.push({"year": d.Year, "pop": "", "inter": "yes", "name": "UN", });
-			//arrays of years
-			//array.years.map(function(e){
-				//console.log(e);
-				//if(e == d.Year){
-					array.years.push({"year":d.Year,
+			array.years.push({"year":d.Year,
 						 "UN": parseInt(d.UnitedNationsDepartmentofEconomicandSocialAffairs),
 						 "UNI": "no",
 						 "USCensus": parseInt(d.UnitedStatesCensusBureau),
@@ -76,16 +58,9 @@
 						 "hyde": parseInt(d.HYDE),
 						 "hydeI": "no",
 						 "maddison": parseInt(d.Maddison), 
-						 "madI": "no",});
-				//}
-			//})
+						 "madI": "no",
+			});
 			
-			//console.log(array);
-			
-			
-			if(!inArray(d.Year, years)){
-				years.push(d.Year);
-			}
 
 			//UN
 			if (d.UnitedNationsDepartmentofEconomicandSocialAffairs !== ""){
@@ -202,16 +177,9 @@
 						e.UNI="yes";
 					}
 				})
-			}/*else{
-				array.years.map(function(e){
-					if(e.year == d.year){
-						e.UNI="no";
-					}
-				})
-			}*/
+			}
 		});
 		
-		console.log(array);
 		
 		//USCensus
 		var usDom=[];
@@ -342,168 +310,10 @@
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
-				.x(function(d) { return xScale(d.year); })//not sure this is right
-				.y(function(d) { return yScale(d.pop); });//not sure this is right
+				.x(function(d) { return xScale(d.year); })
+				.y(function(d) { return yScale(d.pop); });
+
 		
-
-		//not ideal, but draws all the data...
-		//UN
-		svg.selectAll(".point")
-			.data(dataSet.UN)
-			.enter()
-			.append("svg:circle")
-			.attr("fill", "#DD1C77")
-			.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})
-			.attr("cx", function(d){
-				return xScale(d.year);
-						
-			})
-			.attr("cy", function(d){
-				return yScale(d.pop);
-			})
-			.attr("r", "4");
-			
-
-		/*//path function, calls line function
-			svg.append("path")
-			.datum(dataSet.UN)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "1.5px")
-			.attr("stroke", "#DD1C77")
-			.attr("d", line);*/
-
-
-		//populationBureau
-		svg.selectAll(".point")
-			.data(dataSet.populationBureau)
-			.enter()
-			.append("svg:circle")
-			.attr("fill", "green")
-			.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})
-			.attr("cx", function(d){
-				return xScale(d.year);
-						
-			})
-			.attr("cy", function(d){
-				return yScale(d.pop);
-			})
-			.attr("r", "4");
-					
-		/*//path function, calls line function
-		svg.append("path")
-			.datum(dataSet.populationBureau)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "1.5px")
-			.attr("stroke", "green")
-			.attr("d", line);*/
-
-		//maddison
-		svg.selectAll(".point")
-			.data(dataSet.maddison)
-			.enter()
-			.append("svg:circle")
-			.attr("fill", "purple")
-			.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})
-			.attr("cx", function(d){
-				return xScale(d.year);
-			})
-			.attr("cy", function(d){
-				return yScale(d.pop);
-			})
-			.attr("r", "4");
-					
-		/*//path function, calls line function
-		svg.append("path")
-			.datum(dataSet.maddison)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "1.5px")
-			.attr("stroke", "purple")
-			.attr("d", line);*/
-
-
-		//hyde
-		svg.selectAll(".point")
-			.data(dataSet.hyde)
-			.enter()
-			.append("svg:circle")
-			.attr("fill", "orange")
-			.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})
-			.attr("cx", function(d){
-				return xScale(d.year);		
-			})
-			.attr("cy", function(d){
-				return yScale(d.pop);
-			})
-			.attr("r", "4");
-					
-		/*//path function, calls line function
-		svg.append("path")
-			.datum(dataSet.hyde)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "1.5px")
-			.attr("stroke", "orange")
-			.attr("d", line);*/
-
-		//USCensus
-		svg.selectAll(".point")
-			.data(dataSet.USCensus)
-			.enter()
-			.append("svg:circle")
-			.attr("fill", "blue")
-			.attr("fill-opacity", function(d){
-				if(d.inter == "yes"){
-					return 0.3;
-				}else{
-					return 0.9;
-				}
-			})
-			.attr("cx", function(d){
-				return xScale(d.year);	
-			})
-			.attr("cy", function(d){
-				return yScale(d.pop);
-			})
-			.attr("r", "4");
-					
-		/*//path function, calls line function
-		svg.append("path")
-			.datum(dataSet.USCensus)
-			.attr("class", "axis")
-			.attr("fill", "none")
-			.attr("stroke-width", "1.5px")
-			.attr("stroke", "blue")
-			.attr("d", line);*/
-			
-
-			
 	var means ={year:[], pop:[]};
 	var y = array.years.map(function(d, i){
 			var t =[];
@@ -536,22 +346,9 @@
 			means.pop.push(d3.mean(t));
 			means.year.push(d);
 			d.mean=d3.mean(t);
-			//console.log(t);
-			//console.log(means);
 		
 		});
-		
-		/*means.year.map(function(d, i){
-			array.years.map(function(e){
-				if(e.year == d.year){
-					e.mean=d.pop;
-				}
-			})
-		});*/
 
-		//console.log(array);
-		
-				
 		//draw lines
 		var line = d3.svg.line()
 				.interpolate("linear") 
@@ -583,54 +380,51 @@
 			})
 			
 			.on("mouseover", function(d, i) {
-				//Get this circles position for tooltip
+				//Get this position for tooltip
 				var xPosition = parseFloat(xScale(d.year)) ;
 				var yPosition = parseFloat(yScale(d.mean)+70) ;
 				
 				var sizing = d.year;
-				console.log(d.year);
+				var sizingY = d.mean;
+				
 				//Update the tooltip position and value
 				d3.select("#tooltip")
 					.style("left", function(d){
-						if(parseInt(sizing) >= 1600){
-							console.log("hit");
-							return (xPosition-400 + "px");
+						if(parseInt(sizing) >= 1500){
+							return (xPosition-500 + "px");
 						}else{
 							return (xPosition + "px");
 						}
 					})
-					.style("top", yPosition-70 + "px")
-					.select("#year")
-					.text(d.year);
-
-				d3.select("#pop")
-					.text(parseInt(d.mean));
-				d3.select("#UN")
-					.text(parseInt(d.UN));
+					.style("top", function(d){
+						if(parseInt(sizingY) <= 3500000000){
+							return yPosition-320 + "px";
+						}else{
+							return yPosition-70 + "px";
+						}
+					});
 					
-				console.log("is");
-				//console.log(d);
+			
 				var list = {year:[], values:[]};
-				console.log(d);
-				
+
 				list.year.push({"year": parseInt(d.year),"mean": parseInt(d.mean), });
 				list.values.push({"name": "UN", "pop": parseInt(d.UN), "inter": d.UNI});
 				list.values.push({"name": "US Census", "pop": parseInt(d.USCensus), "inter": d.USCI});
 				list.values.push({"name": "Pop. Bureau", "pop": parseInt(d.populationBureau), "inter":d.popBI});
 				list.values.push({"name": "Hyde", "pop": parseInt(d.hyde), "inter":d.hydeI});
 				list.values.push({"name":"Maddison", "pop": parseInt(d.maddison), "inter": d.madI});
-			
-				console.log(list);
+
 				d3.select("#tooltip").append("div").attr("id", "graph");
 				
 				var graphH= 300;
 				var graphW = 500;
 				
 				var v = d3.select("#graph").append("svg")
-						.attr("width", graphW)
-    					.attr("height", graphH)
-    					.attr("class", "display")
-    					.attr("transform", "translate(20, 20)");
+					.attr("width", graphW)
+    				.attr("height", graphH)
+    				.attr("class", "display")
+    				.attr("transform", "translate(20, 20)");
+    				
     			//title		
     			v.selectAll(".title")
     				.data(list.year)
@@ -644,25 +438,17 @@
     				
     				
     			var min = d3.min(list.values, function(d){
-    				//console.log("is");
-    				//console.log(d);
     				var c =[];
-    				//c.push(d.UN);
-    				//c.push(d.populationBureau);
-    				//c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
     				c.push(d.pop);
     				return d3.min(c);
     			});
     			
-    			console.log("min is"+min);
     			var max =  d3.max(list.values, function(d){
     				var c =[];
-    				//c.push(d.UN, d.USCensus, d.populationBureau, d.hyde, d.maddison);
     				c.push(d.pop);
     				return d3.max(c);
     			});
     			
-    			//console.log("max is"+max);
     			//Don't want the min bar to be zero, so way to add to lower end of
     			//scale so that the lowest value will still be drawn..
     			var t= (min-((max-min)/5));
@@ -681,11 +467,7 @@
 					.attr("class", "axis line")
 					.attr("transform", "translate(100, 0)") //not sure if last value should be zero but looks ok..
 					.call(yAxisT);
-					
-				/*//xScale
-				var xScaleT = d3.scale.linear()
-                    .domain([0, 500])
-                    .range([5, (500-50)]);*/
+				
                 //xScale 
                 var xScaleT = d3.scale.ordinal()
     				.rangeRoundBands([50, graphW-60], .1);
@@ -707,9 +489,7 @@
 				.interpolate("linear") 
 				.x(function(d) { return xScaleT(d.mean); })
 				.y(function(d) { return yScaleT(d.mean); });
-					
-			
-				//.attr("d", linesK(d));
+
 				
 				//Draws bars
 				var barPadding = 1; 
@@ -729,21 +509,15 @@
       					if(Number.isNaN(d.pop)){
       						return graphH-30;
       					}else{
-      						//return  graphH - d.pop; ;
-      						//return 100;
       						return yScaleT(d.pop); 
       					}
-      					//return  h - d; ;
       				})
       				.attr("height", function(d) { 
       					if(Number.isNaN(d.pop)){
       						return 0;
       					}else{
-      						//return 175;
-      						//console.log(graphH);
       						return (graphH-30)- yScaleT(d.pop); 
       					}
-      					//return 20;
       				})
       				.attr("width", (graphW-200) / list.values.length - barPadding)
       				.attr("fill", function(d){
@@ -772,9 +546,7 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "4px")
 				.attr("stroke", "#F4C066");
-				
-				//#9787A3-nice purple gray color, #E8C384-orange
-				
+								
 				//X-labels	
     			v.selectAll(".labels")
     				.data(list.values)
@@ -860,12 +632,7 @@
     				.attr("y", 35)
     				.attr("fill", "black")
     				.attr("font-size", "11px");
-    				
-    				
-					
-					//.text(d.UN);
 
-				//console.log(d);
 				//Show the tooltip
 				d3.select("#tooltip").classed("hidden", false);
 			})

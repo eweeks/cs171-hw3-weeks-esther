@@ -8,13 +8,16 @@
         .axis path,
         .axis line {
             fill: none;
-            stroke: lightgrey; }
+            stroke: lightgrey;
+            shape-rendering: crispEdges; 
+        }
 
         .dataArea {
             stroke: 1px steelblue;
             fill:steelblue;
             fill-opacity:0.5;
             clip-path: url(#clip);
+            shape-rendering: crispEdges;
         }
 		
 		#tooltip {
@@ -30,6 +33,7 @@
 			-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 			box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 			pointer-events: none;
+			shape-rendering: crispEdges;
   		}
 
   		#tooltip.hidden {
