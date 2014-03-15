@@ -1,5 +1,6 @@
 /**
- * Created by hen on 2/20/14.
+ * Original Created by hen on 2/20/14.
+ * Homework solution for Esther Weeks 3/14
  */
  
 	var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
@@ -40,7 +41,6 @@
 
 	d3.csv("timeline.csv", function(data) {
 
-		//Must be a better way of doing this than just coding it all in... 
 		//Takes Data from csv, puts into array
 		data.forEach(function(d, i){
 
@@ -224,8 +224,9 @@
 		});
 
 		var xAxis, xScale, yAxis,  yScale;
+		
 
-		//Need to set upper domain in more appropriate manner?
+		//Set upper domain in more appropriate manner?
 		xScale = d3.scale.linear().domain([0,2050]).range([bbVis.x, bbVis.w]); 
 
 		// example that translates to the bottom left of our vis space:
@@ -233,7 +234,7 @@
 			"transform": "translate(" + bbVis.x + "," + (bbVis.y + bbVis.h) + ")",  
 		});
 		
-		//find way to select the pop. max ?
+		//Find way to select the pop. max ?
 		yScale = d3.scale.linear().domain([0, 9400000000]).range([bbVis.h, 0]);
 
 		xAxis = d3.svg.axis()
@@ -421,6 +422,4 @@
 			.attr("stroke", "blue")
 			.attr("d", line);
 			
-		console.log(dataSet);
-
 	};
