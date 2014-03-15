@@ -317,9 +317,13 @@ d3.csv("unHealth.csv", function(data) {
 	//viewA();
 	//viewB();
 	
+		//Event 1 Jan-Feb. 27, 30
+		//Event 2 March 29, 31
+		//Event 3 August 2012 34, 36
+	
 		//testing out calling brush
-		var a = dataSet[28].date;
-		var b =dataSet[31].date;
+		var a = dataSet[34].date;
+		var b =dataSet[36].date;
 		
 	
 	overview.select(".brush").call(brush.extent([a, b]));
