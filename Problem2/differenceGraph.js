@@ -5,7 +5,7 @@
 	var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
 
 	margin = {
-		top: 70,
+		top: 60,
 		right: 400,
 		bottom: 50,
 		left: 50
@@ -615,21 +615,7 @@
     			
     			var l=((d.mean-min)/d.mean)*100;
     			var u=((max-d.mean)/d.mean)*100;
-    				
-    			/*//percent diver. for graph
-    			v.selectAll(".diff")
-    				.data(list.year)
-					.enter()
-    				.append("text")
-    				.attr("class", "diff")
-    				.text(function(d, i){
-    					var a = ((max-min)/d.mean)*100;
-    					return  "Percent Difference: "+ a.toFixed(2);
-    				})
-    				.attr("x", 350)
-    				.attr("y", 35)
-    				.attr("fill", "black")
-    				.attr("font-size", "11px");*/
+
     				
     			//lower title for population
     			v.selectAll("titleP")
@@ -779,12 +765,6 @@
 				clicked=true;
 			}
 			})
-			/*.on("mouseout", function(d){
-				//Hide the tooltip
-				d3.select("#tooltip").classed("hidden", true);
-				d3.select("#graph").remove();
-			})*/;
-			
-			console.log(array.years);
+
 	
 	};

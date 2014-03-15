@@ -28,20 +28,25 @@ The last sketch, tries to combine the overview graph with a detail view, like a 
 It draws the average line for the graph, and on a tooltip, shows the detail view for each year, 
 not the whole spread of the data. My initial sketch for the detail shows a bar chart 
 representing the population numbers, with a red line to represent the average population
-estimate for that year. Visually, this allows you to see if each source's population
-estimate falls above or below the average, and approximately by how much. I liked this 
-design because it starts out with the broad overview graph and then allows the viewer to
-explore the data more to get additional information and details. Because of the tooltip,
-you can still see the overview graph and the detail at the same time, and it is easy to 
-move between the years with just a mouseover. I decided to differentiate the interpolated data
-by changing the opacity on the bar's color. Lighter means it was interpolated, darker means
-it wasn't. The scaling on the overview chart is still challenging, but it is easier to 
-work with when just doing the average instead of all the sources on it. My big concern with
-this visualization, is showing the percent difference for each year. Right now, I'm just
-calculating those numbers and printing them on the top of the tooltip, but I feel this isn't
-the most effective way to do so, and would like to find a way to visually represent this as well.
-I would like to have an additional option that would draw a chart showing this percentages as well.
+estimate for that year, but I displayed a chart showing percent above/below
+average. Visually, this allows you to see if each source's population estimate falls above 
+or below the average, and approximately by how much. I liked this design because it starts 
+out with the broad overview graph and then allows the viewer to explore the data more to get
+additional information and details. Because of the tooltip, you can still see the overview 
+graph and the detail at the same time, and it is easy to move between the years with just a click. 
+I decided to differentiate the interpolated data by changing the opacity on the bar's color. 
+Lighter means it was interpolated, darker means it wasn't. This is used in the detail chart 
+for both the population and percents. The scaling on the overview chart is still challenging, 
+but it is easier to work with when just doing the average instead of all the sources on it. 
+I originally had the chart drawn only on a mouseover but changed this to a click. This
+allows the viewer to leave the detail chart up and scroll the page some if they're looking
+at the overview. It's not ideal still, but it is better.
+
+In my initial design, I instead of solid bars I had drawn stacks of rectangles, where each
+rectangle represented a set number of people. I though this could be useful for visually
+comparing the differences in population amounts between the sources, but ran into trouble
+implementing in, and it was abandoned. 
 
 After having finished the brush section of the problem set, I was very tempted to try
 and implement that with this visual as well, I like how its interaction works, and could
-see it complementing this data very well. 
+see it complementing this data very well. But.. no time. 
