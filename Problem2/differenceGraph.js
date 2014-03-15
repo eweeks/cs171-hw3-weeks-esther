@@ -364,6 +364,7 @@
 			.attr("stroke", "red")
 			.attr("d", line);
 		
+		var clicked=false;
 		
 		//Mean
 		svg.selectAll(".point")
@@ -379,7 +380,14 @@
 				return yScale(d.mean);
 			})
 			
-			.on("mouseover", function(d, i) {
+			.on("click", function(d, i) {
+				
+				if(clicked){
+					d3.select("#graph").remove();
+					d3.select("#tooltip").classed("hidden", true);
+					clicked=false;
+				}
+				else{
 				//Get this position for tooltip
 				var xPosition = parseFloat(xScale(d.year)) ;
 				var yPosition = parseFloat(yScale(d.mean)+70) ;
@@ -635,12 +643,15 @@
 
 				//Show the tooltip
 				d3.select("#tooltip").classed("hidden", false);
+				
+				clicked=true;
+			}
 			})
-			.on("mouseout", function(d){
+			/*.on("mouseout", function(d){
 				//Hide the tooltip
 				d3.select("#tooltip").classed("hidden", true);
 				d3.select("#graph").remove();
-			});
+			})*/;
 			
 			console.log(array.years);
 	
