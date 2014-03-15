@@ -97,7 +97,6 @@ d3.csv("unHealth.csv", function(data) {
 
 	
 	data.forEach(function(d, i){
-		//console.log(d);
 		dataSet.push({"date": format.parse(d.AnalysisDate),
 					"count": convertToInt(d.WomensHealth)});
 	});
@@ -116,9 +115,6 @@ d3.csv("unHealth.csv", function(data) {
 	var minDate = date(dataSet[0]);
     var maxDate = date(dataSet[dataSet.length-1]);
 	
-	console.log(minDate);
-	console.log(maxDate);
-	
 		//Clipping Path
 		detail.append("defs").append("clipPath")
     		.attr("id", "clip")
@@ -126,12 +122,8 @@ d3.csv("unHealth.csv", function(data) {
    	 		.attr("width", bbDetail.w-100)
     		.attr("height", bbDetail.h)
     		.attr("x", 50);
-    		//.attr("y", );
-    		//.attr("transform", "translate(0," + (bbDetail.h - 120) + ")");
 
-	//Function for overview view
-	//function viewA(){
-		console.log(dataSet);
+	//Overview view
 		
 		//yScale
 		yScale1 = d3.scale.linear().domain([0, max]).range([bbOverview.h-30, 0]);
@@ -223,25 +215,11 @@ d3.csv("unHealth.csv", function(data) {
   			draw.selectAll("rect")
   			.attr({
     			height: bbOverview.h-30,
-    			//width: bbOverview.w-60,
-				//transform: "translate(20,100)"
 			});
 			
 		d3.select(".background").attr("height", "60");
-		
-
-		  //overview.select(".brush").call(brush.extent([a, b]));
-		  //draw.call(brush.extent([a, b]));
-		  
-		//var t =d3.svg.brush().x(xScale1).extent([0.4, 0.8]);
-		//brush.extent([0.4, 0.8]);
-
-	//};
 	
 	//Draw Detail Chart
-	//function viewB(){
-	
-		
 		//yScale
 		yScale2 = d3.scale.linear().domain([0, max]).range([bbDetail.h-120, 0]);
 		
@@ -300,8 +278,6 @@ d3.csv("unHealth.csv", function(data) {
 			.datum(dataSet)
 			.attr("class", "path detailPath")
 			.attr("fill", "none")
-			//.attr("stroke-width", "1px")
-			//.attr("stroke", "red")
 			.attr("d", line);		
 				
 		//draw circles
@@ -319,22 +295,6 @@ d3.csv("unHealth.csv", function(data) {
 				return yScale2(d.count);
 			});
 	
-		
-	
-	//}
-	
-	
-		//Event 1 Jan-Feb. 27, 30
-		//Event 2 March 29, 31
-		//Event 3 August 2012 34, 36
-	
-		//testing out calling brush
-		//var a = dataSet[34].date;
-		//var b =dataSet[36].date;
-		
-	
-	//overview.select(".brush").call(brush.extent([a, b]));
-	//brushed();
 	
 	var events = d3.select("svg")
 				.append("g")
@@ -430,7 +390,6 @@ d3.csv("unHealth.csv", function(data) {
                     .html('<div style="width: 150px;">The "Blunt Amendment" is proposed by Sen. Roy Blunt, to allow companies to refuse contraception coverage if it is against their moral or religious beliefs. </div>')
 			
     	});
-    	//.attr("fill", "black");
     
     events.append("text")
     	.attr("class", "events")
@@ -481,17 +440,16 @@ d3.csv("unHealth.csv", function(data) {
     			.attr("y", bbDetail.h-220)
 
     		box.append('foreignObject')
-                    .attr('x', 790)
-                    .attr('y', bbDetail.h-200)
-                    .attr("class", "tips")
-                    .attr('width', 200)
-                    .attr('height', 200)
-                    .append("xhtml:body")
-                    .html('<div style="width: 150px;">Regulations passed ensuring coverage for employees of religious organizations/institutions which self insure. </div>')
+                .attr('x', 790)
+                .attr('y', bbDetail.h-200)
+                .attr("class", "tips")
+                .attr('width', 200)
+                .attr('height', 200)
+                .append("xhtml:body")
+                .html('<div style="width: 150px;">Regulations passed ensuring coverage for employees of religious organizations/institutions which self insure. </div>')
 			
 			
     	});
-    	//.attr("fill", "black");
     	
     events.append("text")
     	.attr("class", "events")
@@ -530,7 +488,6 @@ d3.csv("unHealth.csv", function(data) {
 			
 		
     	});
-    	//.attr("fill", "black");
 	
 	
 });
