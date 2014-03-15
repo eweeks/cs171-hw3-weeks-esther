@@ -354,40 +354,62 @@ d3.csv("unHealth.csv", function(data) {
     	.attr("x", 80)
     	.attr("y", bbDetail.h+130)
     	.on("click", function(d){
-    		var s = dataSet[27].date;
+    		var s = dataSet[28].date;
     		var f = dataSet[30].date;
     		overview.select(".brush").call(brush.extent([s, f]));
 			brushed();
 			
 			var box = events.append("g").attr("class", "box");
-			
-			
 			box.append("rect")
 				.attr("class", "tipBox")
-				.attr("x", 480)
+				.attr("x", 280)
 				.attr("y", bbDetail.h-250)
-				.attr("height", 180)
+				.attr("height", 190)
 				.attr("width", 180);
 				
 			box.append("text")
     			.attr("class", "tips")
-    			.text("January 2012")
-    			.attr("x", 520)
+    			.text("January 20, 2012")
+    			.attr("x", 320)
     			.attr("y", bbDetail.h-220)
 
     			
     		box.append('foreignObject')
-                    .attr('x', 490)
-                    .attr('y', bbDetail.h-200)
-                    .attr("class", "tips")
-                    .attr('width', 200)
-                    .attr('height', 200)
-                    .append("xhtml:body")
-                    .html('<div style="width: 150px;">Obama administration announces religiously affiliated employers cannot deny full birth control coverage to women they employ.</div>')
+                .attr('x', 280)
+                .attr('y', bbDetail.h-200)
+                .attr("class", "tips")
+                .attr('width', 200)
+                .attr('height', 200)
+                .append("xhtml:body")
+                .html('<div style="width: 150px;">US Department of Health and Human Services announces full health insurance coverage for prescribed contraceptives and contraceptive services</div>')
+			
+
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 520)
+				.attr("y", bbDetail.h-200)
+				.attr("height", 220)
+				.attr("width", 180);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("February 10, 2012")
+    			.attr("x", 560)
+    			.attr("y", bbDetail.h-170)
+
+    			
+    		box.append('foreignObject')
+                .attr('x', 520)
+                .attr('y', bbDetail.h-150)
+                .attr("class", "tips")
+                .attr('width', 200)
+                .attr('height', 200)
+                .append("xhtml:body")
+                .html('<div style="width: 150px;">Obama administration announces religiously affiliated employers cannot deny full birth control coverage to women they employ, with the exception of churches and houses of worship.</div>')
 			
 			box.append("rect")
 				.attr("class", "tipBox")
-				.attr("x", 780)
+				.attr("x", 800)
 				.attr("y", bbDetail.h-200)
 				.attr("height", 220)
 				.attr("width", 180);
@@ -395,11 +417,11 @@ d3.csv("unHealth.csv", function(data) {
 			box.append("text")
     			.attr("class", "tips")
     			.text("February 2012")
-    			.attr("x", 820)
+    			.attr("x", 840)
     			.attr("y", bbDetail.h-170)
 
     		box.append('foreignObject')
-                    .attr('x', 790)
+                    .attr('x', 810)
                     .attr('y', bbDetail.h-150)
                     .attr("class", "tips")
                     .attr('width', 200)
@@ -420,6 +442,54 @@ d3.csv("unHealth.csv", function(data) {
     		var f = dataSet[31].date;
     		overview.select(".brush").call(brush.extent([s, f]));
 			brushed();
+			
+			var box = events.append("g").attr("class", "box");
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 480)
+				.attr("y", bbDetail.h-150)
+				.attr("height", 130)
+				.attr("width", 180);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("March 1, 2012")
+    			.attr("x", 520)
+    			.attr("y", bbDetail.h-120)
+
+    			
+    		box.append('foreignObject')
+                .attr('x', 490)
+                .attr('y', bbDetail.h-100)
+                .attr("class", "tips")
+                .attr('width', 200)
+                .attr('height', 200)
+                .append("xhtml:body")
+                .html('<div style="width: 150px;">"Blunt Amendment" is voted down by US Senate</div>')
+			
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 780)
+				.attr("y", bbDetail.h-250)
+				.attr("height", 170)
+				.attr("width", 190);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("March 16, 2012")
+    			.attr("x", 820)
+    			.attr("y", bbDetail.h-220)
+
+    		box.append('foreignObject')
+                    .attr('x', 790)
+                    .attr('y', bbDetail.h-200)
+                    .attr("class", "tips")
+                    .attr('width', 200)
+                    .attr('height', 200)
+                    .append("xhtml:body")
+                    .html('<div style="width: 150px;">Regulations passed ensuring coverage for employees of religious organizations/institutions which self insure. </div>')
+			
+			
     	});
     	//.attr("fill", "black");
     	
@@ -433,6 +503,32 @@ d3.csv("unHealth.csv", function(data) {
     		var f = dataSet[36].date;
     		overview.select(".brush").call(brush.extent([s, f]));
 			brushed();
+			
+			var box = events.append("g").attr("class", "box");
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 500)
+				.attr("y", bbDetail.h-150)
+				.attr("height", 170)
+				.attr("width", 180);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("August 1, 2012")
+    			.attr("x", 540)
+    			.attr("y", bbDetail.h-120)
+
+    			
+    		box.append('foreignObject')
+                .attr('x', 510)
+                .attr('y', bbDetail.h-100)
+                .attr("class", "tips")
+                .attr('width', 200)
+                .attr('height', 200)
+                .append("xhtml:body")
+                .html('<div style="width: 150px;">Parts of the Affordable Care Act go into effect, including coverage for prescribed contraceptives and contraceptive services</div>')
+			
+		
     	});
     	//.attr("fill", "black");
 	
