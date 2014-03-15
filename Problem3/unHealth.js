@@ -209,7 +209,7 @@ d3.csv("unHealth.csv", function(data) {
 			.attr("cy", function(d, i){
 				return yScale2(d.count);
 			})
-			events.select(".tips").remove();
+			events.select(".box").remove();
 
 		};
 			
@@ -384,6 +384,28 @@ d3.csv("unHealth.csv", function(data) {
                     .attr('height', 200)
                     .append("xhtml:body")
                     .html('<div style="width: 150px;">Obama administration announces religiously affiliated employers cannot deny full birth control coverage to women they employ.</div>')
+			
+			box.append("rect")
+				.attr("class", "tipBox")
+				.attr("x", 780)
+				.attr("y", bbDetail.h-200)
+				.attr("height", 220)
+				.attr("width", 180);
+				
+			box.append("text")
+    			.attr("class", "tips")
+    			.text("February 2012")
+    			.attr("x", 820)
+    			.attr("y", bbDetail.h-170)
+
+    		box.append('foreignObject')
+                    .attr('x', 790)
+                    .attr('y', bbDetail.h-150)
+                    .attr("class", "tips")
+                    .attr('width', 200)
+                    .attr('height', 200)
+                    .append("xhtml:body")
+                    .html('<div style="width: 150px;">The "Blunt Amendment" is proposed by Sen. Roy Blunt, to allow companies to refuse contraception coverage if it is against their moral or religious beliefs. </div>')
 			
     	});
     	//.attr("fill", "black");
