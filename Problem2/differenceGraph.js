@@ -299,12 +299,7 @@
 			.attr("class", "axis line")
 			.attr("transform", "translate(0 ,"+bbVis.h+")")
 			.call(xAxis);
-			
-		//draw lines
-		var line = d3.svg.line()
-				.interpolate("linear") 
-				.x(function(d) { return xScale(d.year); })
-				.y(function(d) { return yScale(d.pop); });
+
 
 		//Find the average for each year
 		var y = array.years.map(function(d, i){
@@ -345,6 +340,7 @@
 				.y(function(d) { return yScale(d.mean); });
 					
 		//path function, calls line function
+		//draws average line
 		svg.append("path")
 			.datum(array.years)
 			.attr("class", "axis")
@@ -356,7 +352,7 @@
 		//var to keep track if a circle is clicked or not
 		var clicked=false;
 		
-		//Mean
+		//Circles for Average
 		svg.selectAll(".point")
 			.data(array.years)
 			.enter()
@@ -390,7 +386,7 @@
 					d3.select("#tooltip")
 						.style("left", function(d){
 							if(parseInt(sizing) >= 1500){
-								return (xPosition-500 + "px");
+								return (xPosition-600 + "px");
 							}else{
 								return (xPosition + "px");
 							}
@@ -402,7 +398,8 @@
 								return yPosition-70 + "px";
 							}
 						});
-						
+					
+					//data for this specific year
 					var list = {year:[], values:[]};
 					
 					list.year.push({"year": parseInt(d.year),"mean": parseInt(d.mean), });
@@ -423,7 +420,7 @@
     					.attr("class", "display")
     					.attr("transform", "translate(20, 20)");
     				
-    				//title		
+    				//Chart Title	
     				v.selectAll(".title")
     					.data(list.year)
 						.enter()
@@ -434,13 +431,14 @@
     					.attr("y", 20)
     					.attr("fill", "black");
 	
-    				
+    				//Min pop for the year
     				var min = d3.min(list.values, function(d){
     					var c =[];
     					c.push(d.pop);
     					return d3.min(c);
     				});
     				
+    				//Max pop for the year
     				var max =  d3.max(list.values, function(d){
     					var c =[];
     					c.push(d.pop);
@@ -545,7 +543,7 @@
 						.attr("stroke-width", "4px")
 						.attr("stroke", "#F4C066");
 											
-						//X-labels	
+					//X-labels	
     				v.selectAll(".labels")
     					.data(list.values)
 						.enter()
@@ -563,6 +561,8 @@
     					.attr("fill", "black")
     					.attr("font-size", "11px");
     			
+    				
+    				//Text for pop amount over/under average
     				var aver = d.mean;
     				v.selectAll(".estimates")
     					.data(list.values)
