@@ -416,40 +416,40 @@
 				
 					var v = d3.select("#graph").append("svg")
 						.attr("width", graphW)
-    					.attr("height", graphH)
-    					.attr("class", "display")
-    					.attr("transform", "translate(20, 20)");
-    				
-    				//Chart Title	
-    				v.selectAll(".title")
-    					.data(list.year)
+						.attr("height", graphH)
+						.attr("class", "display")
+						.attr("transform", "translate(20, 20)");
+					
+					//Chart Title	
+					v.selectAll(".title")
+						.data(list.year)
 						.enter()
-    					.append("text")
-    					.attr("class", "title")
-    					.text("Year "+ d.year)
-    					.attr("x", 10)
-    					.attr("y", 20)
-    					.attr("fill", "black");
+						.append("text")
+						.attr("class", "title")
+						.text("Year "+ d.year)
+						.attr("x", 10)
+						.attr("y", 20)
+						.attr("fill", "black");
 	
-    				//Min pop for the year
-    				var min = d3.min(list.values, function(d){
-    					var c =[];
-    					c.push(d.pop);
-    					return d3.min(c);
-    				});
-    				
-    				//Max pop for the year
-    				var max =  d3.max(list.values, function(d){
-    					var c =[];
-    					c.push(d.pop);
-    					return d3.max(c);
-    				});
-    			
-    				//Don't want the min bar to be zero, so way to add to lower end of
-    				//scale so that the lowest value will still be drawn..
-    				var t= (min-((max-min)/5));
-    			
-    				//yScale
+					//Min pop for the year
+					var min = d3.min(list.values, function(d){
+						var c =[];
+						c.push(d.pop);
+						return d3.min(c);
+					});
+					
+					//Max pop for the year
+					var max =  d3.max(list.values, function(d){
+						var c =[];
+						c.push(d.pop);
+						return d3.max(c);
+					});
+				
+					//Don't want the min bar to be zero, so way to add to lower end of
+					//scale so that the lowest value will still be drawn..
+					var t= (min-((max-min)/5));
+				
+					//yScale
 					var yScaleT = d3.scale.linear().domain([t, max]).range([graphH-30, 70]);
 				
 					//yAxis
@@ -464,17 +464,17 @@
 						.attr("transform", "translate(100, 0)") //not sure if last value should be zero but looks ok..
 						.call(yAxisT);
 				
-                	//xScale 
-                	var xScaleT = d3.scale.ordinal()
-    					.rangeRoundBands([50, graphW-180], .1);
-    					
+					//xScale 
+					var xScaleT = d3.scale.ordinal()
+						.rangeRoundBands([50, graphW-180], .1);
+						
 					//xAxis
 					var xAxisT = d3.svg.axis()
-    					.scale(xScaleT)
-    					.orient("bottom");
-    				
-    				//Add X axis
-    				v.append("g")
+						.scale(xScaleT)
+						.orient("bottom");
+					
+					//Add X axis
+					v.append("g")
 						.attr("class", "axis line")
 						.attr("transform", "translate(50,"+(graphH-30)+")") 
 						.call(xAxisT);
@@ -483,43 +483,43 @@
 					var barPadding = 1; 
 				
 					v.selectAll(".bar")
-      					.data(list.values)
-    					.enter().append("rect")
-      					.attr("class", function(d){
-      						if(d.pop == max){
-      							return "bar max";
-      						}else if(d.pop == min){
-      							return "bar min";
-      						}else{
-      							return "bar";
-      						}
-      					})
-      					.attr("x", function(d, i) { 
-      						if(i==0){
-      							return 100+(i *((graphW-230)/ list.values.length));
-      						}else{
-      							return 100+(i *((graphW-230)/ list.values.length));
-      						}
-      					 })
-      					.attr("y", function(d) { 
-      						if(Number.isNaN(d.pop)){
-      							return graphH-30;
-      						}else{
-      							return yScaleT(d.pop); 
-      						}
-      					})
-      					.attr("height", function(d) { 
-      						if(Number.isNaN(d.pop)){
-      							return 0;
-      						}else{
-      							return (graphH-30)- yScaleT(d.pop); 
-      						}
-      					})
-      					.attr("width", (graphW-240) / list.values.length - barPadding)
-      					.attr("fill", function(d){
-      						return fill(d.name);
-      					})
-      					.attr("fill-opacity", function(d){
+						.data(list.values)
+						.enter().append("rect")
+						.attr("class", function(d){
+							if(d.pop == max){
+								return "bar max";
+							}else if(d.pop == min){
+								return "bar min";
+							}else{
+								return "bar";
+							}
+						})
+						.attr("x", function(d, i) { 
+							if(i==0){
+								return 100+(i *((graphW-230)/ list.values.length));
+							}else{
+								return 100+(i *((graphW-230)/ list.values.length));
+							}
+						 })
+						.attr("y", function(d) { 
+							if(Number.isNaN(d.pop)){
+								return graphH-30;
+							}else{
+								return yScaleT(d.pop); 
+							}
+						})
+						.attr("height", function(d) { 
+							if(Number.isNaN(d.pop)){
+								return 0;
+							}else{
+								return (graphH-30)- yScaleT(d.pop); 
+							}
+						})
+						.attr("width", (graphW-240) / list.values.length - barPadding)
+						.attr("fill", function(d){
+							return fill(d.name);
+						})
+						.attr("fill-opacity", function(d){
 							if(d.inter == "yes"){
 								return 0.25;
 							}else{
@@ -532,94 +532,94 @@
 						.data(list.year)
 						.attr("class", "aver")
 						.attr("x1", 100)
-    					.attr("y1", function(d){
-    						return yScaleT(d.mean);
-    					})
-   						.attr("x2", 470)
-    					.attr("y2", function(d){
-    						return yScaleT(d.mean);
-    					})
+						.attr("y1", function(d){
+							return yScaleT(d.mean);
+						})
+						.attr("x2", 470)
+						.attr("y2", function(d){
+							return yScaleT(d.mean);
+						})
 						.attr("fill", "none")
 						.attr("stroke-width", "4px")
 						.attr("stroke", "#F4C066");
 											
 					//X-labels	
-    				v.selectAll(".labels")
-    					.data(list.values)
+					v.selectAll(".labels")
+						.data(list.values)
 						.enter()
-    					.append("text")
-    					.attr("class", "labels")
-    					.text(function(d, i){
-    						return  d.name;
-    					})
-    					.attr("x", function(d, i){
-    						return 100+(i *((graphW-230)/ list.values.length));
-    					})
-    					.attr("y",  function(d){
-    						return (graphH-20);
-    					})
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");
-    			
-    				
-    				//Text for pop amount over/under average
-    				var aver = d.mean;
-    				v.selectAll(".estimates")
-    					.data(list.values)
-						.enter()
-    					.append("text")
-    					.attr("class", "estimates")
-    					.text( function(d, i){
-    						var diff = parseInt(d.pop-aver)
-    						if(diff >=0){
-    							return "+"+diff;
-    						}else{
-    							return  diff;
-    						}
-    					})
-    					.attr("x", function(d, i){
-    						return 100+(i *((graphW-220)/ list.values.length));
-    					})
-    					.attr("y",  function(d){
-    						return yScaleT(d.pop)-2;
-    					})
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");
-    				
-    				var l=((d.mean-min)/d.mean)*100;
-    				var u=((max-d.mean)/d.mean)*100;
+						.append("text")
+						.attr("class", "labels")
+						.text(function(d, i){
+							return  d.name;
+						})
+						.attr("x", function(d, i){
+							return 100+(i *((graphW-230)/ list.values.length));
+						})
+						.attr("y",  function(d){
+							return (graphH-20);
+						})
+						.attr("fill", "black")
+						.attr("font-size", "11px");
+				
 					
-    				
-    				//lower title for population
-    				v.selectAll("titleP")
-    					.data(list.year)
+					//Text for pop amount over/under average
+					var aver = d.mean;
+					v.selectAll(".estimates")
+						.data(list.values)
 						.enter()
-    					.append("text")
-    					.attr("class", "titleP")
-    					.text("Population Estimates Compared to Average")
-    					.attr("x", 200)
-    					.attr("y", 295)
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");
-    					
-    				//lower title for percent
-    				v.selectAll("titleP")
-    					.data(list.year)
+						.append("text")
+						.attr("class", "estimates")
+						.text( function(d, i){
+							var diff = parseInt(d.pop-aver)
+							if(diff >=0){
+								return "+"+diff;
+							}else{
+								return  diff;
+							}
+						})
+						.attr("x", function(d, i){
+							return 100+(i *((graphW-220)/ list.values.length));
+						})
+						.attr("y",  function(d){
+							return yScaleT(d.pop)-2;
+						})
+						.attr("fill", "black")
+						.attr("font-size", "11px");
+					
+					var l=((d.mean-min)/d.mean)*100;
+					var u=((max-d.mean)/d.mean)*100;
+					
+					
+					//lower title for population
+					v.selectAll("titleP")
+						.data(list.year)
 						.enter()
-    					.append("text")
-    					.attr("class", "titleP")
-    					.text("Percent to Average")
-    					.attr("x", 500)
-    					.attr("y", 295)
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");
-    				
-    				//second graph
-    				var lower = 0-l.toFixed(2);
-    				var upper= u.toFixed(2);
-    				var f= (lower-((upper-lower)/5));
-    				
-    				//yScale
+						.append("text")
+						.attr("class", "titleP")
+						.text("Population Estimates Compared to Average")
+						.attr("x", 200)
+						.attr("y", 295)
+						.attr("fill", "black")
+						.attr("font-size", "11px");
+						
+					//lower title for percent
+					v.selectAll("titleP")
+						.data(list.year)
+						.enter()
+						.append("text")
+						.attr("class", "titleP")
+						.text("Percent to Average")
+						.attr("x", 500)
+						.attr("y", 295)
+						.attr("fill", "black")
+						.attr("font-size", "11px");
+					
+					//second graph
+					var lower = 0-l.toFixed(2);
+					var upper= u.toFixed(2);
+					var f= (lower-((upper-lower)/5));
+					
+					//yScale
 					var yScaleP = d3.scale.linear().domain([f, upper]).range([graphH-30, 70]);
 				
 					//yAxis
@@ -627,25 +627,25 @@
 						.scale(yScaleP)
 						.orient("left")
 						.ticks(5);
-				
+
 					//Draw axis
 					v.append("g")
 						.attr("class", "axis line")
 						.attr("transform", "translate(510, 0)")
 						.call(yAxisP);
-    			
-    				//Draws line for percent below average
+
+					//Draws line for percent below average
 					v.append("svg:line")
 						.data(list.year)
 						.attr("class", "aver")
 						.attr("x1", 510)
-    					.attr("y1", function(d){
-    						return yScaleP(lower);
-    					})
-   						.attr("x2", 570)
-    					.attr("y2", function(d){
-    						return yScaleP(lower);
-    					})
+						.attr("y1", function(d){
+							return yScaleP(lower);
+						})
+						.attr("x2", 570)
+						.attr("y2", function(d){
+							return yScaleP(lower);
+						})
 						.attr("fill", "none")
 						.attr("stroke-width", "4px")
 						.attr("stroke",  function(d){
@@ -656,35 +656,35 @@
 							var op =$( ".min" ).attr( "fill-opacity" )
 							return op;
 						})
-					
+
 					//Text for below average	
 					v.selectAll(".tb")
-    					.data(list.year)
+						.data(list.year)
 						.enter()
-    					.append("text")
-    					.attr("class", "tb")
-    					.text(function(d, i){
-    						return  lower;
-    					})
-    					.attr("x", 520)
-    					.attr("y", function(d){
-    						return yScaleP(lower)-5;
-    					})
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");	
+						.append("text")
+						.attr("class", "tb")
+						.text(function(d, i){
+							return  lower;
+						})
+						.attr("x", 520)
+						.attr("y", function(d){
+							return yScaleP(lower)-5;
+						})
+						.attr("fill", "black")
+						.attr("font-size", "11px");	
 
 					//Draws line for percent above average
 					v.append("svg:line")
 						.data(list.year)
 						.attr("class", "aver")
 						.attr("x1", 510)
-    					.attr("y1", function(d){
-    						return yScaleP(upper);
-    					})
-   						.attr("x2", 570)
-    					.attr("y2", function(d){
-    						return yScaleP(upper);
-    					})
+						.attr("y1", function(d){
+							return yScaleP(upper);
+						})
+						.attr("x2", 570)
+						.attr("y2", function(d){
+							return yScaleP(upper);
+						})
 						.attr("fill", "none")
 						.attr("stroke-width", "4px")
 						.attr("stroke", function(d){
@@ -698,32 +698,32 @@
 						
 					//Text for above average	
 					v.selectAll(".tl")
-    					.data(list.year)
+						.data(list.year)
 						.enter()
-    					.append("text")
-    					.attr("class", "tl")
-    					.text(function(d, i){
-    						return  "+"+upper;
-    					})
-    					.attr("x", 520)
-    					.attr("y", function(d){
-    						return yScaleP(upper)-5;
-    					})
-    					.attr("fill", "black")
-    					.attr("font-size", "11px");
-    				
-    				//Draws line for average
-    				v.append("svg:line")
+						.append("text")
+						.attr("class", "tl")
+						.text(function(d, i){
+							return  "+"+upper;
+						})
+						.attr("x", 520)
+						.attr("y", function(d){
+							return yScaleP(upper)-5;
+						})
+						.attr("fill", "black")
+						.attr("font-size", "11px");
+					
+					//Draws line for average
+					v.append("svg:line")
 						.data(list.year)
 						.attr("class", "aver")
 						.attr("x1", 510)
-    					.attr("y1", function(d){
-    						return yScaleP(0);
-    					})
-   						.attr("x2", 570)
-    					.attr("y2", function(d){
-    						return yScaleP(0);
-    					})
+						.attr("y1", function(d){
+							return yScaleP(0);
+						})
+						.attr("x2", 570)
+						.attr("y2", function(d){
+							return yScaleP(0);
+						})
 						.attr("fill", "none")
 						.attr("stroke-width", "4px")
 						.attr("stroke", "#F4C066");
@@ -735,5 +735,4 @@
 				}
 			})
 
-	
 	};
