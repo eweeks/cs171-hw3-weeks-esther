@@ -51,21 +51,21 @@ var xAxis2;
 var fill;
 
 svg = d3.select("#visUN").append("svg").attr({
-    	width: width + margin.left + margin.right,
-    	height: height + margin.top + margin.bottom
+		width: width + margin.left + margin.right,
+		height: height + margin.top + margin.bottom
 	})
 	.append("g").attr({
-        transform: "translate(" + margin.left + "," + margin.top + ")"
-    });
-    
+		transform: "translate(" + margin.left + "," + margin.top + ")"
+	});
+
 d3.select("svg")	
 	.append("text")
-    .attr("class", "title")
-    .text("Social Media and Women's Health - Data from UN Global Pulse")
-    .attr("x", 50)
-    .attr("y", 20)
-    .attr("fill", "black");
-    
+	.attr("class", "title")
+	.text("Social Media and Women's Health - Data from UN Global Pulse")
+	.attr("x", 50)
+	.attr("y", 20)
+	.attr("fill", "black");
+
 var overview = svg
 				.append("svg")
 				.attr({

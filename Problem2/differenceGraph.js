@@ -1,5 +1,6 @@
 /**
  * Created by hen on 2/20/14.
+ * Homework solution for Esther Weeks 3/14
  */
  
 	var bbVis, brush, createVis, dataSet, handle, height, margin, svg, svg2, width;
